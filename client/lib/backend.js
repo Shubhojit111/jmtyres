@@ -20,5 +20,15 @@ export async function apiGet(path, { session = false } = {}) {
 
 export async function getSessionUser() { return (await apiGet('auth/me', {session:true})).user; }
 export async function getProduct(slug) { return (await apiGet(`products/${encodeURIComponent(slug)}`)).product; }
-export async function getBrands() { return (await apiGet('brands')).items; }
-export async function getHomeContent() { return (await apiGet('content/home')).content; }
+export async function getBrands() {
+  try { return (await apiGet('brands')).items; }
+  catch { return []; }
+}
+
+// The public landing page remains readable when the separately deployed API
+// is restarting or unreachable. Admin-edited content resumes automatically
+// once the API responds again.
+export async function getHomeContent() {
+  try { return (await apiGet('content/home')).content; }
+  catch { return null; }
+}

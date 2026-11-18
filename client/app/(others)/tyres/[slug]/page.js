@@ -14,7 +14,7 @@ export default async function ProductPage({params}) {
   let product;
   try { product = await getProduct(params.slug); } catch(error) { if (error.status === 404) notFound(); throw error; }
   const specs = [['Tyre size',product.tyre.size],['Width',`${product.tyre.width} mm`],['Aspect ratio',`${product.tyre.aspectRatio}%`],['Rim diameter',`${product.tyre.rimDiameter} in`],['Load index',product.tyre.loadIndex || 'Ask owner'],['Speed rating',product.tyre.speedRating || 'Ask owner'],['Tyre type',product.tyre.type],['SKU',product.sku]];
-  return <article className="mx-4 mb-12 mt-6 sm:mx-8">
+  return <article className="mx-auto mb-12 mt-2 w-full max-w-[1600px] px-4 sm:px-6 lg:px-10">
     <a className="inline-flex items-center gap-1 text-[12px] font-extrabold text-[#2d6842] hover:underline" href="/catalogue"><ArrowLeft size={15} aria-hidden="true" />Back to catalogue</a>
     {product.isDemo && <div className="mt-5 rounded-xl border border-[#b9d2b9] bg-[#ecf5eb] p-4 text-[12px] font-bold text-[#35593d]">DEMO PRODUCT — sample name, stock, price and imagery are for testing. This is not an actual listed tyre or a fitment recommendation.</div>}
     <div className="mt-5 grid gap-8 rounded-[22px] bg-[#f3f7f2] p-5 sm:p-8 lg:grid-cols-[minmax(0,1fr)_minmax(360px,.9fr)]">

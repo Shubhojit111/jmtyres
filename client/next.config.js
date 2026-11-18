@@ -9,6 +9,7 @@ if (!['http:', 'https:'].includes(target.protocol) || target.pathname !== '/' ||
 module.exports = {
   reactStrictMode: true,
   poweredByHeader: false,
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   async rewrites() {
     return [
       { source:'/api/:path*', destination:`${backend}/api/:path*` },

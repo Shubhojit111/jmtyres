@@ -1,6 +1,4 @@
 /* layout.js — HTML shell, SEO metadata, the persistent navigation, and the contact footer. */
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import MotionDirector from '@/components/ui/MotionDirector';
 import './globals.css';
 import '@/styles/tailwind-residual.css';
@@ -23,11 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en-IN">
       <body>
-        <div className="site-shell [width:100%] [max-width:none] [margin:0] [padding:0_16px_16px] [background:#fff] [border-radius:0] [box-shadow:none] max-[1250px]:[width:100%] max-[970px]:[width:100%] max-[720px]:[width:100%] max-[720px]:[max-width:none] max-[720px]:[margin:0] max-[720px]:[padding:0_6px_6px] max-[720px]:[border-radius:0]" id="top">
-          <Navbar />
-          <main id="main-content">{children}</main>
-          <Footer />
-        </div>
+        {children}
         <MotionDirector />
       </body>
     </html>

@@ -20,12 +20,16 @@ export default function MotionDirector() {
         observer.unobserve(entry.target);
       }
     }, { rootMargin: '0px 0px -4% 0px', threshold: 0.01 });
-    const watch = (el, kind) => {
+    const watch = (el, kind, index = 0) => {
       if (seen.has(el)) return;
       seen.add(el);
       const aboveFold = el.getBoundingClientRect().top < innerHeight * 0.9;
-      el.classList.add(kind === 'image' ? 'motion-image' : 'motion-section');
-      if (!aboveFold) el.classList.add('motion-pending');
+      if (kind === 'image') el.classList.add('motion-image');
+      else if (kind === 'heading') {
+        el.classList.add('motion-heading', index % 2 === 0 ? 'motion-from-left' : 'motion-from-right');
+      } else el.classList.add('motion-section');
+      if (aboveFold) el.classList.add('motion-visible');
+      else el.classList.add('motion-pending');
       if (!aboveFold) {
         tracked.push(el);
         observer.observe(el);
@@ -33,6 +37,7 @@ export default function MotionDirector() {
     };
     const scan = () => {
       main.querySelectorAll('section:not(.hero-section), .content-page > header').forEach(el => watch(el, 'section'));
+      main.querySelectorAll('h2').forEach((el, index) => watch(el, 'heading', index));
       main.querySelectorAll('img:not(.brand-logo)').forEach(el => watch(el, 'image'));
     }; 
     scan();

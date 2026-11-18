@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-18T07:57:14.610Z",
+  "checkedAt": "2026-11-18T21:05:56.035Z",
   "base": "http://127.0.0.1:3000",
   "checks": [
     "Engineering stays inside its allocated section at 16 widths (320–1920px), with five primary links and two brand bands",
@@ -14,7 +14,7 @@
     {
       "width": 320,
       "documentWidth": 320,
-      "gap": 29,
+      "gap": 48,
       "overflow": 0,
       "nav": [
         "Home",
@@ -23,12 +23,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 360,
       "documentWidth": 360,
-      "gap": 29,
+      "gap": 48,
       "overflow": 0,
       "nav": [
         "Home",
@@ -37,12 +43,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 390,
       "documentWidth": 390,
-      "gap": 29,
+      "gap": 48,
       "overflow": 0,
       "nav": [
         "Home",
@@ -51,12 +63,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 720,
       "documentWidth": 720,
-      "gap": 29,
+      "gap": 48,
       "overflow": 0,
       "nav": [
         "Home",
@@ -65,12 +83,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 721,
       "documentWidth": 721,
-      "gap": 52,
+      "gap": 48,
       "overflow": 0,
       "nav": [
         "Home",
@@ -79,12 +103,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 768,
       "documentWidth": 768,
-      "gap": 52,
+      "gap": 48,
       "overflow": 0,
       "nav": [
         "Home",
@@ -93,12 +123,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 970,
       "documentWidth": 970,
-      "gap": 52,
+      "gap": 48,
       "overflow": 0,
       "nav": [
         "Home",
@@ -107,12 +143,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 971,
       "documentWidth": 971,
-      "gap": 52,
+      "gap": 48,
       "overflow": 0,
       "nav": [
         "Home",
@@ -121,12 +163,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 1080,
       "documentWidth": 1080,
-      "gap": 52,
+      "gap": 64,
       "overflow": 0,
       "nav": [
         "Home",
@@ -135,12 +183,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 1200,
       "documentWidth": 1200,
-      "gap": 52,
+      "gap": 64,
       "overflow": 0,
       "nav": [
         "Home",
@@ -149,12 +203,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 1250,
       "documentWidth": 1250,
-      "gap": 52,
+      "gap": 64,
       "overflow": 0,
       "nav": [
         "Home",
@@ -163,12 +223,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 1280,
       "documentWidth": 1280,
-      "gap": 52,
+      "gap": 64,
       "overflow": 0,
       "nav": [
         "Home",
@@ -177,12 +243,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 1357,
       "documentWidth": 1357,
-      "gap": 52,
+      "gap": 64,
       "overflow": 0,
       "nav": [
         "Home",
@@ -191,12 +263,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 1440,
       "documentWidth": 1440,
-      "gap": 52,
+      "gap": 64,
       "overflow": 0,
       "nav": [
         "Home",
@@ -205,12 +283,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 1600,
       "documentWidth": 1600,
-      "gap": 52,
+      "gap": 64,
       "overflow": 0,
       "nav": [
         "Home",
@@ -219,12 +303,18 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     },
     {
       "width": 1920,
       "documentWidth": 1920,
-      "gap": 52,
+      "gap": 64,
       "overflow": 0,
       "nav": [
         "Home",
@@ -233,7 +323,13 @@
         "About",
         "Contact"
       ],
-      "bands": 2
+      "bands": 2,
+      "heroVisible": true,
+      "heroLayers": [
+        0,
+        10,
+        20
+      ]
     }
   ],
   "result": "passed"

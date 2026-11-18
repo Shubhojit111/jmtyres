@@ -4,6 +4,6 @@ import { getSessionUser } from '@/lib/backend';
 export const dynamic = 'force-dynamic';
 export default async function RequestPage({params}) {
   const actor = await getSessionUser();
-  if (actor?.role !== 'customer') redirect(`/account?next=${encodeURIComponent(`/account/requests/${params.id}`)}`);
-  return <RequestDetails id={params.id}/>;
+  if (!['customer','admin'].includes(actor?.role)) redirect(`/account?next=${encodeURIComponent(`/account/requests/${params.id}`)}`);
+  return <RequestDetails id={params.id} admin={actor.role === 'admin'}/>;
 }

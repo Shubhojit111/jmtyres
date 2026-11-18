@@ -18,7 +18,7 @@ export function publicRequest(req) {
     rejectionReason:req.rejectionReason || '', history:req.history || [], createdAt:req.createdAt, updatedAt:req.updatedAt, isDemo:!!req.productSnapshot.isDemo };
 }
 export async function createPurchaseRequest(customer, input) {
-  if (customer.role !== 'customer') throw new ApiError(403,'Use a customer account to request a tyre.');
+  if (!['customer','admin'].includes(customer.role)) throw new ApiError(403,'Sign in with a customer or admin account to request a tyre.');
   const data = parse(requestSchema,input);
   const id = objectId(data.productId);
   if (!id) throw new ApiError(400,'Select a valid product.');
@@ -33,7 +33,7 @@ export async function createPurchaseRequest(customer, input) {
     customerSnapshot:{ name:customer.name,email:customer.email }, phone:data.phone,
     quantity:data.quantity, totalPaise:product.pricePaise * data.quantity, fulfillment:data.fulfillment, message:data.message,
     status:'pending', paymentStatus:'not_initiated', reservedQty:0, paidPaise:0,
-    history:[{status:'pending',at:time,actor:'customer'}], createdAt:time, updatedAt:time };
+    history:[{status:'pending',at:time,actor:customer.role}], createdAt:time, updatedAt:time };
   const result = await purchaseRequests(db).insertOne(request);
   request._id = result.insertedId;
   await notifyRequestSubmitted(request, customer);

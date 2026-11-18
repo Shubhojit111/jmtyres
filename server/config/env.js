@@ -9,7 +9,7 @@ if (!globalThis.__jmDevSecret) globalThis.__jmDevSecret = randomBytes(48).toStri
 export const env = Object.freeze({
   production,
   port: Number(process.env.PORT || 4000),
-  mongoUri: process.env.MONGODB_URI || (production ? '' : 'mongodb://127.0.0.1:27017/jmtyres?replicaSet=jmrs'),
+  mongoUri: process.env.MONGODB_URI || (production ? '' : 'mongodb://127.0.0.1:27017/jmtyres'),
   mongoDb: process.env.MONGODB_DB || 'jmtyres',
   authSecret: process.env.AUTH_SECRET || (production ? '' : globalThis.__jmDevSecret),
   frontendOrigin: process.env.FRONTEND_ORIGIN || '',
@@ -20,18 +20,11 @@ export const env = Object.freeze({
   trustProxy: (process.env.TRUST_PROXY || '').split(',').map(x => x.trim()).filter(Boolean),
   callPhone: process.env.CALL_PHONE || '918336819093',
   whatsAppPhone: process.env.WHATSAPP_NUMBER || '918336819093',
-  ownerWhatsAppNumber: process.env.OWNER_WHATSAPP_NUMBER || '918336819093',
   ownerEmail: process.env.OWNER_EMAIL?.trim() || '',
   smtp: Object.freeze({
     host:process.env.SMTP_HOST || '', port:Number(process.env.SMTP_PORT || 587),
     secure:process.env.SMTP_SECURE === 'true', user:process.env.SMTP_USER || '',
     pass:process.env.SMTP_PASS || '', from:process.env.SMTP_FROM || '',
-  }),
-  whatsApp: Object.freeze({
-    phoneNumberId:process.env.WHATSAPP_PHONE_NUMBER_ID || '',
-    apiToken:process.env.WHATSAPP_API_TOKEN || '',
-    templateName:process.env.WHATSAPP_TEMPLATE_NAME || '',
-    templateLanguage:process.env.WHATSAPP_TEMPLATE_LANGUAGE || 'en',
   }),
   payment: Object.freeze({
     mode:process.env.PAYMENT_MODE === 'live' ? 'live' : 'demo',

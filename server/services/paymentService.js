@@ -14,7 +14,7 @@ export { paymentConfig };
 
 const safeEqualHex = (given, expected) => /^[a-f\d]+$/i.test(given || '') && Buffer.byteLength(given,'utf8') === expected.length && timingSafeEqual(Buffer.from(given,'utf8'),Buffer.from(expected,'utf8'));
 export async function startPayment(requestId, actor) {
-  if (actor.role !== 'customer') throw new ApiError(403,'A customer account is required.');
+  if (!['customer','admin'].includes(actor.role)) throw new ApiError(403,'A customer or admin account is required.');
   const db = await getDb();
   const request = await purchaseRequests(db).findOne({requestId,customerId:actor._id});
   if (!request) throw new ApiError(404,'Request not found.');

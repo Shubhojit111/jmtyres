@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { ArrowUpRight, LockKeyhole, Mail, UserRound } from 'lucide-react';
 import AccountDashboard from './AccountDashboard';
 
-export default function AuthPage({admin = false}) {
-  const [user,setUser] = useState(undefined); const [mode,setMode] = useState('login');
+export default function AuthPage({admin = false, initialMode = 'login'}) {
+  const [user,setUser] = useState(undefined); const [mode,setMode] = useState(initialMode);
   const [form,setForm] = useState({name:'',email:'',phone:'',password:''});const [message,setMessage] = useState('');const [busy,setBusy] = useState(false);
   const [resetToken,setResetToken] = useState('');const [next,setNext] = useState('');
   useEffect(()=>{const search = new URLSearchParams(window.location.search);const token=search.get('reset')||''; if(token){setResetToken(token);setMode('reset');}const requested=search.get('next')||'';if(requested.startsWith('/') && !requested.startsWith('//')) { try { const destination=new URL(requested,window.location.origin); if(destination.origin===window.location.origin)setNext(`${destination.pathname}${destination.search}${destination.hash}`); } catch { /* Discard malformed return paths. */ } }fetch('/api/auth/me',{cache:'no-store'}).then(r=>r.json()).then(data=>setUser(data.user)).catch(()=>setUser(null));},[]);
@@ -35,7 +35,7 @@ export default function AuthPage({admin = false}) {
         {message&&<p aria-live="polite" className="rounded-lg bg-[#e4eee2] p-3 text-[12px] text-[#285135]" role="status">{message}</p>}
         <button className="flex min-h-[47px] w-full items-center justify-center gap-2 rounded-full bg-[#153c28] px-5 text-[13px] font-extrabold text-white disabled:opacity-60" disabled={busy} type="submit">{busy?'Working…':mode==='login'?'Sign in':mode==='register'?'Create account':mode==='forgot'?'Request reset':'Set new password'} <ArrowUpRight aria-hidden="true" size={16}/></button>
       </form>
-      <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-[12px] font-bold text-[#2c6740]">{mode!=='login'&&<button onClick={()=>{setMode('login');setMessage('');}} type="button">Back to sign in</button>}{mode==='login'&&<button onClick={()=>{setMode('forgot');setMessage('');}} type="button">Forgot password?</button>}{mode==='login'&&!admin&&<button onClick={()=>{setMode('register');setMessage('');}} type="button">New here? Register</button>}</div>
+      <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-[12px] font-bold text-[#2c6740]">{mode==='forgot'||mode==='reset'?<a href="/login">Back to sign in</a>:mode==='register'?<a href="/login">Already have an account? Sign in</a>:<><button onClick={()=>{setMode('forgot');setMessage('');}} type="button">Forgot password?</button>{!admin&&<a href="/register">New here? Register</a>}</>}</div>
       {mode==='forgot'&&<p className="mt-4 text-[11px] leading-relaxed text-[#5f7465]">Without SMTP, reset instructions are recorded in the protected admin demo outbox rather than emailed. A phone number alone cannot deliver email.</p>}
       <p className="mt-9 flex items-center gap-2 text-[11px] text-[#657b68]"><Mail size={14} aria-hidden="true"/><UserRound size={14} aria-hidden="true"/> Your session uses an HTTP-only cookie. Purchases require owner approval.</p>
     </div>

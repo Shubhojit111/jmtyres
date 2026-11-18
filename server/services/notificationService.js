@@ -7,7 +7,7 @@ export { notificationMode, site };
 
 const ownerEmail = () => env.ownerEmail;
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]);
-export async function notify({ key, channel = 'email', recipient, subject, message, link, templateParameters }) {
+export async function notify({ key, channel = 'email', recipient, subject, message, link }) {
   const db = await getDb();
   let doc;
   try {
@@ -23,12 +23,6 @@ export async function notify({ key, channel = 'email', recipient, subject, messa
       const result = await mailTransport().sendMail({ from: env.smtp.from, to: recipient, subject: `J.M. Tyres | ${subject}`, text: [message, link].filter(Boolean).join('\n\n'), html: `<div style="font-family:Arial,sans-serif;color:#153c28;max-width:570px;padding:28px;border:1px solid #dbe7dc;border-radius:18px"><strong style="font-size:19px">J.M. Tyre Services</strong><p style="white-space:pre-line;line-height:1.6;color:#263c2c">${escapeHtml(message)}</p>${link ? `<p><a href="${escapeHtml(link)}" style="color:#245b37">View details</a></p>` : ''}<small style="color:#5b6c60">Mulund West, Mumbai · This is a transactional message.</small></div>` });
       providerId = result.messageId; status = 'sent';
     }
-    if (channel === 'whatsapp' && notificationMode().whatsApp === 'configured') {
-      const response = await fetch(`https://graph.facebook.com/v21.0/${encodeURIComponent(env.whatsApp.phoneNumberId)}/messages`, { method: 'POST', headers: { Authorization: `Bearer ${env.whatsApp.apiToken}`, 'Content-Type':'application/json' }, body: JSON.stringify({ messaging_product:'whatsapp', to:String(recipient).replace(/\D/g,''), type:'template', template: { name:env.whatsApp.templateName, language:{code:env.whatsApp.templateLanguage}, components:[{type:'body',parameters:(templateParameters || []).map(value=>({type:'text',text:String(value)}))}] } }) });
-      const output = await response.json();
-      if (!response.ok) throw new Error(output.error?.message || 'WhatsApp API rejected the message.');
-      providerId = output.messages?.[0]?.id || ''; status = 'sent';
-    }
   } catch (error) { status = 'failed'; errorMessage = String(error.message).slice(0, 280); }
   await notificationLogs(db).updateOne({ _id: doc }, { $set: { status, error: errorMessage, providerId, updatedAt: new Date() } });
   return { status };
@@ -39,7 +33,6 @@ export async function notifyRequestSubmitted(request, customer) {
   await Promise.all([
     notify({ key:`request:${request.requestId}:owner`, recipient:ownerEmail(), subject:`New purchase request ${request.requestId}`, message:description, link:url }),
     notify({ key:`request:${request.requestId}:customer`, recipient:customer.email, subject:'Purchase request received', message:`Your request ${request.requestId} was saved. The team will review availability. No payment is due until the owner approves it. Track your request in your account.`, link:`${site()}/account` }),
-    notify({ key:`request:${request.requestId}:whatsapp`, channel:'whatsapp', recipient:env.ownerWhatsAppNumber, subject:'New purchase request', message:description, link:url, templateParameters:[request.requestId,customer.name,customer.phone,request.productSnapshot.name,request.quantity,url] }),
   ]);
 }
 export async function notifyRequestStatus(request, customer, event) {

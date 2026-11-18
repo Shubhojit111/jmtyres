@@ -40,9 +40,9 @@ export default async function HomePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }} />
-      <div className="mx-auto flex w-full max-w-[1640px] flex-col items-center">
+      <div className="mx-auto flex w-full max-w-[1600px] flex-col items-center px-4 sm:px-6 lg:px-10 py-3 sm:py-5">
         <Hero content={content} />
-        <div className="w-full space-y-12 px-0 sm:px-0 lg:space-y-16 lg:px-14">
+        <div className="w-full space-y-12 lg:space-y-16 mt-8 sm:mt-12">
           <LocalProof />
           <TyreFinder />
           <About />

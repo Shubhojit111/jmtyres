@@ -12,7 +12,7 @@ async function call(path,{method='GET',body,cookie='',status=200,form,origin}={}
 }
 const check=(condition,label)=>{assert(condition,label);console.log(`PASS ${++count}: ${label}`);};
 (async()=>{
-  const health=(await call('/api/health')).data;check(health.ok&&health.database==='connected'&&health.payments.mode==='demo','Mongo connected, demo mode isolated');
+  const health=(await call('/api/health')).data;check(health.ok&&health.database?.status==='connected'&&health.payments.mode==='demo'&&health.notifications.whatsApp==='redirect_only','Mongo connected, demo payments and redirect-only WhatsApp');
   const list=(await call('/api/products?limit=48')).data;check(list.total>=16&&list.items.every(x=>x.isDemo),'16 demo fixtures visible from database');
   const categories=(await call('/api/categories')).data;const brands=(await call('/api/brands')).data;check(categories.items.length>=4&&brands.items.length>=5,'dynamic category and brand APIs');
   const filter=(await call('/api/products?category=Bike&availability=available&sort=price_asc')).data;check(filter.items.length>0&&filter.items.every(x=>x.category==='Bike'&&x.stockQty>0)&&filter.items.every((x,i)=>i===0||x.pricePaise>=filter.items[i-1].pricePaise),'database category, stock and sort filtering');
@@ -23,9 +23,8 @@ const check=(condition,label)=>{assert(condition,label);console.log(`PASS ${++co
   await call('/api/auth/login',{method:'POST',body:{email:'fake@example.test',password:'wrong'},status:401});
   const adminLogin=await call('/api/auth/login',{method:'POST',body:{email:process.env.ADMIN_EMAIL,password:process.env.ADMIN_PASSWORD}});admin=adminLogin.cookie;check(adminLogin.data.user.role==='admin'&&admin.startsWith('jm_session='),'admin authentication and HTTP-only session');
   const cEmail=`qa-${uuid}@jmtyres.test`;const pass='StrongPassword-123!';const registered=await call('/api/auth/register',{method:'POST',body:{name:'QA Customer',email:cEmail,phone:'918300000000',password:pass},status:201});customer=registered.cookie;check(registered.data.user.role==='customer'&&!(JSON.stringify(registered.data).includes('passwordHash')),'customer registration and no password hash exposure');
-  await call('/api/admin/products',{cookie:customer,status:403});await call('/api/requests',{cookie:admin,method:'POST',body:{},status:403});
-  await call('/api/requests/my',{cookie:admin,status:403});await call('/api/auth/profile',{cookie:admin,method:'PATCH',body:{name:'Wrong role',phone:'918300000000'},status:403});
-  check(true,'customer cannot access admin data; admin cannot use customer-only request/profile APIs');
+  await call('/api/admin/products',{cookie:customer,status:403});await call('/api/auth/profile',{cookie:admin,method:'PATCH',body:{name:'Wrong role',phone:'918300000000'},status:403});
+  check(true,'customer cannot access admin data; admin cannot use customer-only profile API');
   const originSpoof=await fetch(`${base}/api/enquiries`,{method:'POST',headers:{Origin:'https://untrusted.example','X-Forwarded-Host':'untrusted.example','Content-Type':'application/json'},body:'{}'});
   check(originSpoof.status===403,'forged forwarded-host cannot bypass cross-origin mutation guard');
   const imageBytes=await sharp({create:{width:96,height:96,channels:3,background:'#62816a'}}).jpeg().toBuffer();const form=new FormData();form.append('file',new Blob([imageBytes],{type:'image/jpeg'}),'qa-test.jpg');
@@ -36,6 +35,11 @@ const check=(condition,label)=>{assert(condition,label);console.log(`PASS ${++co
     localUploads?'product image upload, conversion and local development storage':'production image uploads fail closed without R2; DEMO images remain frontend-owned');
   const product={name:`DEMO · QA Test Tyre ${uuid}`,sku:`QA-${uuid}`,brand:'QA Brand',category:'Car',description:'Fictional test tyre used only to verify CRUD, finder and approval transactions.',pricePaise:500000,stockQty:5,images:[{url:photo,alt:'Illustrative tyre photo'}],tyre:{width:205,aspectRatio:55,rimDiameter:16,loadIndex:'91',speedRating:'V',type:'Tubeless radial'},compatibility:[{vehicleType:'Car / SUV',make:'QA Make',model:'QA Model',variant:'',yearFrom:null,yearTo:null}],active:true,isDemo:true,featured:false};
   const created=(await call('/api/admin/products',{method:'POST',cookie:admin,body:product,status:201})).data.product;check(created.id&&created.tyre.size==='205/55 R16','admin product create stored in Mongo');
+  const adminRequest=(await call('/api/requests',{method:'POST',cookie:admin,body:{productId:created.id,quantity:1,fulfillment:'pickup',message:'Admin purchase flow QA',phone:'918300000000'},status:201})).data.request;
+  const adminOwn=(await call(`/api/requests/${adminRequest.requestId}`,{cookie:admin})).data.request;
+  const adminMine=(await call('/api/requests/my',{cookie:admin})).data;
+  check(adminOwn.requestId===adminRequest.requestId&&adminMine.items.some(x=>x.requestId===adminRequest.requestId),'signed-in admin can create and view own purchase request without another login');
+  await call(`/api/admin/requests/${adminRequest.requestId}/reject`,{method:'PATCH',cookie:admin,body:{reason:'QA cleanup'}});
   const productDetail=(await call(`/api/products/${created.slug}`)).data.product;check(productDetail.sku===product.sku&&productDetail.images.length===1,'public product detail fetched by slug');
   const options=(await call('/api/tyre-finder/vehicle-options')).data.items;const matched=(await call('/api/tyre-finder/search',{method:'POST',body:{method:'vehicle',vehicleType:'Car / SUV',make:'QA Make',model:'QA Model'}})).data;
   const wrong=(await call('/api/tyre-finder/search',{method:'POST',body:{method:'vehicle',vehicleType:'Car / SUV',make:'QA Make',model:'Unknown'}})).data;
@@ -46,7 +50,7 @@ const check=(condition,label)=>{assert(condition,label);console.log(`PASS ${++co
   await call(`/api/requests/${requested.requestId}/payment`,{method:'POST',cookie:customer,body:{},status:409});
   const approved=(await call(`/api/admin/requests/${requested.requestId}/approve`,{method:'PATCH',cookie:admin,body:{paymentType:'full'}})).data.request;
   const stock=(await call(`/api/products/${created.slug}`)).data.product.stockQty;check(approved.status==='awaiting_payment'&&stock===4,'admin approval atomically reserves one unit, no oversell');
-  const logs=(await call('/api/admin/notifications',{cookie:admin})).data.items;check(logs.some(x=>x.subject?.includes('Low stock')&&x.message?.includes(product.sku))&&logs.some(x=>x.channel==='whatsapp'&&x.status==='demo_log_only'),'low stock crossing and owner WhatsApp attempts recorded honestly');
+  const logs=(await call('/api/admin/notifications',{cookie:admin})).data.items;check(logs.some(x=>x.subject?.includes('Low stock')&&x.message?.includes(product.sku))&&!logs.some(x=>x.channel==='whatsapp'),'low stock alert is recorded without any WhatsApp API attempt');
   await call(`/api/admin/products/${created.id}/stock`,{method:'PATCH',cookie:admin,body:{stockQty:5}});
   await call(`/api/admin/products/${created.id}/stock`,{method:'PATCH',cookie:admin,body:{stockQty:4}});
   const alertCycles=(await call('/api/admin/notifications',{cookie:admin})).data.items.filter(x=>x.key?.startsWith(`low-stock:${created.id}:`));

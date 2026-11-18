@@ -5,6 +5,20 @@ import { ensureIndexes } from '../models/index.js';
 let client;
 let connecting;
 let indexing;
+let replicaSetSupported = null;
+
+async function checkReplicaSet(mongo) {
+  if (replicaSetSupported !== null) return replicaSetSupported;
+  try {
+    const admin = mongo.db('admin');
+    const status = await admin.command({ replSetGetStatus: 1 });
+    replicaSetSupported = Boolean(status?.ok);
+  } catch {
+    replicaSetSupported = false;
+  }
+  return replicaSetSupported;
+}
+
 export function mongoClient() {
   if (!client) {
     validateEnvironment();
@@ -24,11 +38,15 @@ export async function getDb() {
 export async function connectDatabase() {
   const db = await getDb();
   await db.command({ping:1});
+  await checkReplicaSet(mongoClient());
   return db;
 }
 export async function closeDatabase() {
   if (client) await client.close();
-  client=null;connecting=null;indexing=null;
+  client=null;connecting=null;indexing=null;replicaSetSupported=null;
+}
+export function isReplicaSet() {
+  return Boolean(replicaSetSupported);
 }
 export function objectId(value) {
   return typeof value === 'string' && ObjectId.isValid(value) && new ObjectId(value).toHexString() === value.toLowerCase() ? new ObjectId(value) : null;
@@ -38,8 +56,16 @@ export function serialize(value) {
 }
 export async function withTransaction(task) {
   await getDb();
+  const mongo = mongoClient();
+  const hasReplicaSet = await checkReplicaSet(mongo);
+
+  if (!hasReplicaSet) {
+    // Standalone MongoDB (e.g. standard local Compass instance). Execute task with undefined session.
+    return task(undefined);
+  }
+
   for (let retry=0;retry<4;retry++) {
-    const session=mongoClient().startSession();
+    const session=mongo.startSession();
     try {
       let result;
       await session.withTransaction(async()=>{result=await task(session);},{readConcern:{level:'snapshot'},writeConcern:{w:'majority'}});

@@ -61,12 +61,15 @@ async function request(base,path,{method='GET',body,cookie='',form}={}) {
     ['POST','/api/enquiries',400,{body:{}}],
     ['GET','/api/requests/my',200,{role:'customer'}],
     ['POST','/api/requests',400,{role:'customer',body:{}}],
+    ['GET','/api/requests/my',200,{role:'admin'}],
+    ['POST','/api/requests',400,{role:'admin',body:{}}],
     ['GET',`/api/requests/${missing}`,404,{role:'customer'}],
     ['POST',`/api/requests/${missing}/payment`,404,{role:'customer'}],
     ['GET','/api/payments/config',200],
     ['POST','/api/payments/webhook',503,{body:{}}],
     ['POST','/api/payments/create-order',404,{role:'customer',body:{requestId:missing}}],
     ['POST','/api/payments/verify',503,{role:'customer',body:{}}],
+    ['POST','/api/payments/verify',503,{role:'admin',body:{}}],
     ['POST','/api/payments/demo/accept',404,{role:'customer',body:{paymentId:'000000000000000000000000'}}],
     ['POST','/api/payments/demo/verify',404,{role:'customer',body:{paymentId:'000000000000000000000000'}}],
     ['POST','/api/payments/demo/fail',404,{role:'customer',body:{paymentId:'000000000000000000000000'}}],
@@ -96,7 +99,7 @@ async function request(base,path,{method='GET',body,cookie='',form}={}) {
     ['GET','/api/admin/audit',200,{role:'admin'}],
     ['POST','/api/admin/demo-seed',200,{role:'admin'}],
   ];
-  assert.equal(tests.length,53,'Audit route count');
+  assert.equal(new Set(tests.map(([method,path])=>`${method} ${path}`)).size,53,'Audit route count');
   const report=[];
   for (const [method,path,status,options={}] of tests) {
     const makeOptions=(server)=>({method,body:options.body,form:options.form?.(),cookie:options.role==='admin'?(server===target?owner.cookie:oldOwner.cookie):options.role==='customer'?customer.cookie:''});
@@ -116,5 +119,5 @@ async function request(base,path,{method='GET',body,cookie='',form}={}) {
   assert.equal(spoof.status,403,'Forged forwarded host rejected');
   const unknown=await request(target,'/api/not-an-endpoint');assert.equal(unknown.status,404);
   if (process.env.CONTRACT_REPORT) writeFileSync(process.env.CONTRACT_REPORT,JSON.stringify({checkedAt:new Date().toISOString(),target,baseline:baseline || null,passed:report.length,crossServerSessions:!!baseline,tests:report},null,2)+'\n');
-  console.log(`PASS: ${report.length} existing method/path contracts, status and response parity${baseline?' vs. baseline':''}; auth cookies and middleware checks passed.`);
+  console.log(`PASS: ${report.length} method/path and role checks across 53 routes, status and response parity${baseline?' vs. baseline':''}; auth cookies and middleware checks passed.`);
 })().catch(error=>{console.error('CONTRACT QA FAILED:',error.message);process.exitCode=1;});

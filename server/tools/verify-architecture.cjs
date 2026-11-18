@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
-const frontend=path.resolve(root,'../frontend');
+const frontend=path.resolve(root,'../client');
 const backendPackage=require(path.join(root,'package.json'));
 const frontendPackage=require(path.join(frontend,'package.json'));
 assert(fs.existsSync(path.join(root,'app.js')) && fs.existsSync(path.join(root,'server.js')));
@@ -13,6 +13,9 @@ assert(!fs.existsSync(path.join(frontend,'app/api')),'Next.js must not contain s
 assert(!fs.existsSync(path.join(frontend,'lib/server')),'Frontend must not import backend services');
 assert(backendPackage.dependencies.mongodb && backendPackage.dependencies.express && !backendPackage.dependencies.next);
 assert(frontendPackage.dependencies.next && !frontendPackage.dependencies.mongodb && !frontendPackage.dependencies.express);
+const notificationSource=fs.readFileSync(path.join(root,'services/notificationService.js'),'utf8');
+assert(!notificationSource.includes('graph.facebook.com'),'WhatsApp must remain a user-initiated redirect, never a server API call');
+assert(!fs.readFileSync(path.join(root,'config/env.js'),'utf8').includes('WHATSAPP_API_TOKEN'),'No WhatsApp API credentials belong in backend configuration');
 const dirs=['config','controllers','middleware','models','routes','services','utils'];
 const files=[path.join(root,'app.js'),path.join(root,'server.js')];
 for(const dir of dirs)for(const name of fs.readdirSync(path.join(root,dir)))if(name.endsWith('.js'))files.push(path.join(root,dir,name));

@@ -23,7 +23,7 @@ export default function CatalogueClient({ initialCategory = '', initialBrand = '
   const change=(key,value)=>{setFilters(prev=>({...prev,[key]:value}));setPage(1);};
   const demo = useMemo(()=>data?.items?.some(p=>p.isDemo),[data]);
   const control = 'mt-1.5 h-[42px] w-full rounded-[10px] border border-[#d8e4d8] bg-white px-3 text-[12px] text-[#183424] outline-offset-2 focus:border-[#3a7750]';
-  return <div className="mx-4 mb-10 mt-7 sm:mx-8">
+  return <div className="catalogue-page mx-auto mb-10 mt-7 w-full max-w-[1600px] px-4 sm:px-6 lg:px-10">
     <div className="rounded-[22px] bg-[#edf3ec] p-6 sm:p-10"><span className="rounded-full bg-[#dfebdd] px-3 py-1 text-[10px] font-extrabold uppercase tracking-wide text-[#245234]">Tyre catalogue</span><h1 className="mt-5 text-[42px] font-extrabold leading-[1.03] tracking-[-.078em] sm:text-[60px]">Find what fits your search.</h1><p className="mt-4 max-w-[650px] text-[14px] leading-relaxed text-[#465c4b]">Search products and tyre sizes in the current database. Vehicle fitment is shown only when verified compatibility is entered by staff.</p></div>
     <div className="mt-6 grid gap-6 lg:grid-cols-[245px_minmax(0,1fr)]">
       <aside aria-label="Catalogue filters" className="h-fit rounded-[19px] border border-[#e3eae1] bg-[#f8faf7] p-5">

@@ -28,6 +28,7 @@ export async function getActor(req, required = null) {
     users(db).findOne({_id:userId,accountStatus:'active'}),
   ]);
   if (!session || !user) {if (required) throw new ApiError(401,'Please sign in again.','AUTH_REQUIRED');return null;}
+  if (required === 'buyer' && !['customer','admin'].includes(user.role)) throw new ApiError(403,'A customer or admin account is required.','FORBIDDEN');
   if (required === 'admin' && user.role !== 'admin') throw new ApiError(403,'Admin access required.','FORBIDDEN');
   if (required === 'customer' && user.role !== 'customer') throw new ApiError(403,'Customer access required.','FORBIDDEN');
   return user;

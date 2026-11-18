@@ -11,5 +11,7 @@ export const footerColumns = [
     { label: 'Gallery', href: '/gallery' },
     { label: 'About J.M.', href: '/about' },
     { label: 'Contact the shop', href: '/contact' },
+    { label: 'Sign in', href: '/login' },
+    { label: 'Create an account', href: '/register' },
   ] },
 ];
