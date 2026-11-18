@@ -1,0 +1,105 @@
+/* End-to-end acceptance against the independent Express API + Mongo replica set.
+ * Set ADMIN_EMAIL and ADMIN_PASSWORD for an existing admin. Can also be run
+ * through the Next.js /api proxy with TEST_URL=http://localhost:3000. */
+const assert=require('node:assert/strict');const sharp=require('sharp');const {randomUUID}=require('crypto');
+const base=process.env.TEST_URL||'http://127.0.0.1:4000';const uuid=randomUUID().slice(0,8);const qaClientIp=`198.18.${parseInt(uuid.slice(0,2),16)}.${parseInt(uuid.slice(2,4),16)}`;let admin='',customer='';let count=0;
+async function call(path,{method='GET',body,cookie='',status=200,form,origin}={}){
+  const headers={'X-Forwarded-For':qaClientIp,...(cookie?{Cookie:cookie}:{}),...(body!==undefined?{'Content-Type':'application/json'}:{}),...(origin?{Origin:origin}:{})};
+  const response=await fetch(`${base}${path}`,{method,headers,body:body===undefined?form:JSON.stringify(body),signal:AbortSignal.timeout(20000),redirect:'manual'});
+  let data;try{data=await response.json();}catch{data={};}
+  assert.equal(response.status,status,`${method} ${path}: expected ${status}, got ${response.status}: ${JSON.stringify(data).slice(0,500)}`);
+  return {data,cookie:response.headers.get('set-cookie')?.split(';')[0]||''};
+}
+const check=(condition,label)=>{assert(condition,label);console.log(`PASS ${++count}: ${label}`);};
+(async()=>{
+  const health=(await call('/api/health')).data;check(health.ok&&health.database==='connected'&&health.payments.mode==='demo','Mongo connected, demo mode isolated');
+  const list=(await call('/api/products?limit=48')).data;check(list.total>=16&&list.items.every(x=>x.isDemo),'16 demo fixtures visible from database');
+  const categories=(await call('/api/categories')).data;const brands=(await call('/api/brands')).data;check(categories.items.length>=4&&brands.items.length>=5,'dynamic category and brand APIs');
+  const filter=(await call('/api/products?category=Bike&availability=available&sort=price_asc')).data;check(filter.items.length>0&&filter.items.every(x=>x.category==='Bike'&&x.stockQty>0)&&filter.items.every((x,i)=>i===0||x.pricePaise>=filter.items[i-1].pricePaise),'database category, stock and sort filtering');
+  const sizeList=(await call('/api/products?size=205%2F55%20R16')).data;check(sizeList.items.some(x=>x.tyre.width===205),'structured size filter');
+  const finder=(await call('/api/tyre-finder/search',{method:'POST',body:{method:'size',width:205,aspectRatio:55,rimDiameter:16}})).data;check(finder.items.length>0&&finder.items.every(x=>x.tyre.size==='205/55 R16'),'size finder queries database');
+  await call('/api/tyre-finder/search',{method:'POST',body:{method:'size',width:205},status:400});check(true,'incomplete finder request rejected');
+  await call('/api/admin/dashboard',{status:401});await call('/api/requests',{method:'POST',body:{},status:401});check(true,'admin and purchase APIs protected');
+  await call('/api/auth/login',{method:'POST',body:{email:'fake@example.test',password:'wrong'},status:401});
+  const adminLogin=await call('/api/auth/login',{method:'POST',body:{email:process.env.ADMIN_EMAIL,password:process.env.ADMIN_PASSWORD}});admin=adminLogin.cookie;check(adminLogin.data.user.role==='admin'&&admin.startsWith('jm_session='),'admin authentication and HTTP-only session');
+  const cEmail=`qa-${uuid}@jmtyres.test`;const pass='StrongPassword-123!';const registered=await call('/api/auth/register',{method:'POST',body:{name:'QA Customer',email:cEmail,phone:'918300000000',password:pass},status:201});customer=registered.cookie;check(registered.data.user.role==='customer'&&!(JSON.stringify(registered.data).includes('passwordHash')),'customer registration and no password hash exposure');
+  await call('/api/admin/products',{cookie:customer,status:403});await call('/api/requests',{cookie:admin,method:'POST',body:{},status:403});
+  await call('/api/requests/my',{cookie:admin,status:403});await call('/api/auth/profile',{cookie:admin,method:'PATCH',body:{name:'Wrong role',phone:'918300000000'},status:403});
+  check(true,'customer cannot access admin data; admin cannot use customer-only request/profile APIs');
+  const originSpoof=await fetch(`${base}/api/enquiries`,{method:'POST',headers:{Origin:'https://untrusted.example','X-Forwarded-Host':'untrusted.example','Content-Type':'application/json'},body:'{}'});
+  check(originSpoof.status===403,'forged forwarded-host cannot bypass cross-origin mutation guard');
+  const imageBytes=await sharp({create:{width:96,height:96,channels:3,background:'#62816a'}}).jpeg().toBuffer();const form=new FormData();form.append('file',new Blob([imageBytes],{type:'image/jpeg'}),'qa-test.jpg');
+  const localUploads=health.images==='local_development';
+  const upload=await call('/api/admin/products/images',{cookie:admin,method:'POST',form,status:localUploads?201:503});
+  const photo=localUploads?upload.data.url:'/demo/TireTread.jpg';
+  check(localUploads ? photo.startsWith('/uploads/products/')&&(await fetch(base+photo)).status===200 : health.images==='not_configured'&&/Cloudflare R2/.test(upload.data.error)&&photo.startsWith('/demo/'),
+    localUploads?'product image upload, conversion and local development storage':'production image uploads fail closed without R2; DEMO images remain frontend-owned');
+  const product={name:`DEMO · QA Test Tyre ${uuid}`,sku:`QA-${uuid}`,brand:'QA Brand',category:'Car',description:'Fictional test tyre used only to verify CRUD, finder and approval transactions.',pricePaise:500000,stockQty:5,images:[{url:photo,alt:'Illustrative tyre photo'}],tyre:{width:205,aspectRatio:55,rimDiameter:16,loadIndex:'91',speedRating:'V',type:'Tubeless radial'},compatibility:[{vehicleType:'Car / SUV',make:'QA Make',model:'QA Model',variant:'',yearFrom:null,yearTo:null}],active:true,isDemo:true,featured:false};
+  const created=(await call('/api/admin/products',{method:'POST',cookie:admin,body:product,status:201})).data.product;check(created.id&&created.tyre.size==='205/55 R16','admin product create stored in Mongo');
+  const productDetail=(await call(`/api/products/${created.slug}`)).data.product;check(productDetail.sku===product.sku&&productDetail.images.length===1,'public product detail fetched by slug');
+  const options=(await call('/api/tyre-finder/vehicle-options')).data.items;const matched=(await call('/api/tyre-finder/search',{method:'POST',body:{method:'vehicle',vehicleType:'Car / SUV',make:'QA Make',model:'QA Model'}})).data;
+  const wrong=(await call('/api/tyre-finder/search',{method:'POST',body:{method:'vehicle',vehicleType:'Car / SUV',make:'QA Make',model:'Unknown'}})).data;
+  check(options.some(x=>x.make==='QA Make')&&matched.items.some(x=>x.id===created.id)&&wrong.items.length===0,'vehicle finder uses explicit staff-entered compatibility only');
+  const requestBody={productId:created.id,quantity:1,fulfillment:'pickup',message:'QA request',phone:'918300000000'};
+  await call('/api/requests',{method:'POST',cookie:customer,body:{...requestBody,quantity:6},status:409});
+  const requested=(await call('/api/requests',{method:'POST',cookie:customer,body:requestBody,status:201})).data.request;check(requested.status==='pending'&&requested.totalPaise===500000,'customer request stores product/price snapshot');
+  await call(`/api/requests/${requested.requestId}/payment`,{method:'POST',cookie:customer,body:{},status:409});
+  const approved=(await call(`/api/admin/requests/${requested.requestId}/approve`,{method:'PATCH',cookie:admin,body:{paymentType:'full'}})).data.request;
+  const stock=(await call(`/api/products/${created.slug}`)).data.product.stockQty;check(approved.status==='awaiting_payment'&&stock===4,'admin approval atomically reserves one unit, no oversell');
+  const logs=(await call('/api/admin/notifications',{cookie:admin})).data.items;check(logs.some(x=>x.subject?.includes('Low stock')&&x.message?.includes(product.sku))&&logs.some(x=>x.channel==='whatsapp'&&x.status==='demo_log_only'),'low stock crossing and owner WhatsApp attempts recorded honestly');
+  await call(`/api/admin/products/${created.id}/stock`,{method:'PATCH',cookie:admin,body:{stockQty:5}});
+  await call(`/api/admin/products/${created.id}/stock`,{method:'PATCH',cookie:admin,body:{stockQty:4}});
+  const alertCycles=(await call('/api/admin/notifications',{cookie:admin})).data.items.filter(x=>x.key?.startsWith(`low-stock:${created.id}:`));
+  check(alertCycles.length===2 && new Set(alertCycles.map(x=>x.key)).size===2,'replenishment to five rearms one low-stock alert on the next crossing');
+  await call(`/api/admin/requests/${requested.requestId}/approve`,{method:'PATCH',cookie:admin,body:{paymentType:'full'},status:409});check(true,'repeat approval blocked; no double stock decrement');
+  const payment=(await call(`/api/requests/${requested.requestId}/payment`,{method:'POST',cookie:customer,body:{}})).data.payment;check(payment.mode==='demo'&&payment.status==='pending'&&!payment.gatewayOrderId,'demo payment separate from Razorpay');
+  await call('/api/payments/demo/verify',{method:'POST',cookie:customer,body:{paymentId:payment.id},status:409});
+  await call('/api/payments/demo/accept',{method:'POST',cookie:customer,body:{paymentId:payment.id}});
+  const verified=(await call('/api/payments/demo/verify',{method:'POST',cookie:customer,body:{paymentId:payment.id}})).data;
+  check(verified.payment.status==='successful'&&verified.notice.includes('DEMO'),'separate demo accept/verify succeeds without real payment');
+  const paid=(await call(`/api/requests/${requested.requestId}`,{cookie:customer})).data.request;check(paid.status==='paid'&&paid.paymentStatus==='successful'&&paid.payments.length===1,'customer order history and verified transaction record');
+  const dashboard=(await call('/api/admin/dashboard',{cookie:admin})).data;check(dashboard.realSuccessfulPayments.totalPaise===0,'demo payment excluded from real revenue');
+  const second=(await call('/api/requests',{method:'POST',cookie:customer,body:{...requestBody,quantity:2},status:201})).data.request;
+  await call(`/api/admin/requests/${second.requestId}/approve`,{method:'PATCH',cookie:admin,body:{paymentType:'advance',advancePaise:200000}});
+  const advance=(await call(`/api/requests/${second.requestId}/payment`,{method:'POST',cookie:customer,body:{}})).data.payment;
+  await call('/api/payments/demo/fail',{method:'POST',cookie:customer,body:{paymentId:advance.id}});
+  const retry=(await call(`/api/requests/${second.requestId}/payment`,{method:'POST',cookie:customer,body:{}})).data.payment;
+  await call('/api/payments/demo/accept',{method:'POST',cookie:customer,body:{paymentId:retry.id}});
+  await call('/api/payments/demo/verify',{method:'POST',cookie:customer,body:{paymentId:retry.id}});
+  const partial=(await call(`/api/requests/${second.requestId}`,{cookie:customer})).data.request;
+  check(partial.paymentStatus==='partially_paid'&&partial.paidPaise===200000&&partial.status==='awaiting_payment','advance payment and retry after simulated failure');
+  await call(`/api/admin/requests/${second.requestId}/complete`,{method:'PATCH',cookie:admin,body:{offlineBalancePaidPaise:800000}});
+  check((await call(`/api/requests/${second.requestId}`,{cookie:customer})).data.request.status==='completed','admin records offline balance before completion');
+  await call(`/api/admin/products/${created.id}/stock`,{method:'PATCH',cookie:admin,body:{stockQty:1}});
+  const pending=await Promise.all([call('/api/requests',{method:'POST',cookie:customer,body:requestBody,status:201}),call('/api/requests',{method:'POST',cookie:customer,body:requestBody,status:201})]);
+  const concurrent=await Promise.all(pending.map(x=>call(`/api/admin/requests/${x.data.request.requestId}/approve`,{method:'PATCH',cookie:admin,body:{paymentType:'full'},status:200}).catch(e=>e)));
+  const success=concurrent.filter(x=>x.data?.request?.status==='awaiting_payment');const failures=concurrent.filter(x=>x instanceof Error);
+  check(success.length===1&&failures.length===1&&(await call(`/api/products/${created.slug}`)).data.product.stockQty===0,'concurrent approvals cannot oversell stock');
+  const detail=(await call(`/api/products/${created.slug}`)).data.product;check(detail.stockStatus==='Out of Stock','zero stock exposed to product CTA');
+  await call('/api/requests',{method:'POST',cookie:customer,body:requestBody,status:409});
+  await call(`/api/admin/requests/${success[0].data.request.requestId}/cancel`,{method:'PATCH',cookie:admin,body:{reason:'QA cancellation with explicit restock'}});
+  check((await call(`/api/products/${created.slug}`)).data.product.stockQty===1,'cancellation restores reserved stock explicitly');
+  await call(`/api/admin/requests/${pending.find(x=>x.data.request.requestId!==success[0].data.request.requestId).data.request.requestId}/reject`,{method:'PATCH',cookie:admin,body:{reason:'QA requested stock unavailable'}});
+  const inquiry=(await call('/api/enquiries',{method:'POST',body:{name:'QA Customer',phone:'918300000000',email:cEmail,vehicleType:'Car / SUV',requirement:'QA tyre enquiry',message:'Checking the saved enquiry workflow.'},status:201})).data;check(inquiry.id&&((await call('/api/admin/enquiries',{cookie:admin})).data.items.some(x=>x.id===inquiry.id)),'contact enquiry saved and visible to admin');
+  const old=(await call('/api/admin/products/'+created.id,{cookie:admin})).data.product;
+  await call('/api/admin/products/'+created.id,{method:'PUT',cookie:admin,body:{...product,stockQty:1,images:[],pricePaise:550000}});
+  const removed=(await call(`/api/admin/products/images?url=${encodeURIComponent(photo)}`,{method:'DELETE',cookie:admin,status:localUploads?200:409})).data;
+  check((localUploads?removed.deleted:/Remove the image from all products/.test(removed.error))&&old.images.length===1,
+    localUploads?'product edit and uploaded-image removal from storage':'product edit and protected DEMO image cannot be deleted via upload endpoint');
+  const content=(await call('/api/admin/content/home',{cookie:admin})).data.content;
+  await call('/api/admin/content/home',{method:'PUT',cookie:admin,body:{...content,catalogueHeading:'QA test heading'}});
+  check((await call('/api/content/home')).data.content.catalogueHeading==='QA test heading','admin-managed homepage content fetched from database');
+  await call('/api/admin/content/home',{method:'PUT',cookie:admin,body:content});
+  await call('/api/auth/forgot-password',{method:'POST',body:{email:cEmail}});
+  const resetLog=(await call('/api/admin/notifications',{cookie:admin})).data.items.find(x=>x.subject==='Reset your password'&&x.recipient===cEmail);
+  const previewHost=process.env.E2B_SANDBOX_ID ? `3000-${process.env.E2B_SANDBOX_ID}.e2b.app` : new URL(process.env.SITE_URL || 'http://localhost:3000').host;
+  check(new URL(resetLog.link).host===previewHost,'reset outbox link points to a browser-reachable preview host, not localhost');
+  const token=new URL(resetLog.link).searchParams.get('reset');
+  await call('/api/auth/reset-password',{method:'POST',body:{token,password:'NewStrongPassword123!'}});
+  await call('/api/auth/login',{method:'POST',body:{email:cEmail,password:pass},status:401});
+  check((await call('/api/auth/login',{method:'POST',body:{email:cEmail,password:'NewStrongPassword123!'}})).data.user.role==='customer','single-use password reset and old password invalidation');
+  const deleted=(await call(`/api/admin/products/${created.id}`,{method:'DELETE',cookie:admin})).data;check(deleted.archived&&!(await call('/api/products?brand=QA%20Brand')).data.items.some(x=>x.id===created.id),'product with historical requests archived, not exposed publicly');
+  await call('/api/admin/dashboard',{cookie:customer,status:401});await call('/api/payments/webhook',{method:'POST',body:{},status:503});
+  check(true,'password reset revokes old sessions; unconfigured real webhook fails closed');
+  console.log(`\n${count} acceptance API checks passed against ${base}. QA records are DEMO and intentionally archived.\n`);
+})().catch(error=>{console.error('FAIL:',error);process.exit(1);});

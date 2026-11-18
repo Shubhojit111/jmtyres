@@ -1,0 +1,300 @@
+{
+  "users": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    },
+    {
+      "name": "email_1",
+      "key": {
+        "email": 1
+      },
+      "unique": true
+    },
+    {
+      "name": "role_1_createdAt_-1",
+      "key": {
+        "role": 1,
+        "createdAt": -1
+      }
+    }
+  ],
+  "sessions": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    },
+    {
+      "name": "id_1",
+      "key": {
+        "id": 1
+      },
+      "unique": true
+    },
+    {
+      "name": "expiresAt_1",
+      "key": {
+        "expiresAt": 1
+      },
+      "expireAfterSeconds": 0
+    }
+  ],
+  "password_resets": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    },
+    {
+      "name": "tokenHash_1",
+      "key": {
+        "tokenHash": 1
+      },
+      "unique": true
+    },
+    {
+      "name": "expiresAt_1",
+      "key": {
+        "expiresAt": 1
+      },
+      "expireAfterSeconds": 0
+    }
+  ],
+  "products": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    },
+    {
+      "name": "slug_1",
+      "key": {
+        "slug": 1
+      },
+      "unique": true
+    },
+    {
+      "name": "sku_1",
+      "key": {
+        "sku": 1
+      },
+      "unique": true
+    },
+    {
+      "name": "active_1_createdAt_-1",
+      "key": {
+        "active": 1,
+        "createdAt": -1
+      }
+    },
+    {
+      "name": "active_1_brand_1_category_1",
+      "key": {
+        "active": 1,
+        "brand": 1,
+        "category": 1
+      }
+    },
+    {
+      "name": "tyre.width_1_tyre.aspectRatio_1_tyre.rimDiameter_1",
+      "key": {
+        "tyre.width": 1,
+        "tyre.aspectRatio": 1,
+        "tyre.rimDiameter": 1
+      }
+    },
+    {
+      "name": "compatibility.vehicleType_1_compatibility.make_1_compatibility.model_1",
+      "key": {
+        "compatibility.vehicleType": 1,
+        "compatibility.make": 1,
+        "compatibility.model": 1
+      }
+    }
+  ],
+  "purchase_requests": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    },
+    {
+      "name": "requestId_1",
+      "key": {
+        "requestId": 1
+      },
+      "unique": true
+    },
+    {
+      "name": "customerId_1_createdAt_-1",
+      "key": {
+        "customerId": 1,
+        "createdAt": -1
+      }
+    },
+    {
+      "name": "status_1_createdAt_-1",
+      "key": {
+        "status": 1,
+        "createdAt": -1
+      }
+    },
+    {
+      "name": "productId_1",
+      "key": {
+        "productId": 1
+      }
+    }
+  ],
+  "payments": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    },
+    {
+      "name": "requestId_1_status_1",
+      "key": {
+        "requestId": 1,
+        "status": 1
+      },
+      "unique": true,
+      "partialFilterExpression": {
+        "status": "pending"
+      }
+    },
+    {
+      "name": "gatewayOrderId_1",
+      "key": {
+        "gatewayOrderId": 1
+      },
+      "unique": true,
+      "partialFilterExpression": {
+        "gatewayOrderId": {
+          "$type": "string"
+        }
+      }
+    },
+    {
+      "name": "gatewayPaymentId_1",
+      "key": {
+        "gatewayPaymentId": 1
+      },
+      "unique": true,
+      "partialFilterExpression": {
+        "gatewayPaymentId": {
+          "$type": "string"
+        }
+      }
+    },
+    {
+      "name": "requestId_1_createdAt_-1",
+      "key": {
+        "requestId": 1,
+        "createdAt": -1
+      }
+    }
+  ],
+  "payment_webhooks": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    },
+    {
+      "name": "eventId_1",
+      "key": {
+        "eventId": 1
+      },
+      "unique": true
+    }
+  ],
+  "enquiries": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    },
+    {
+      "name": "createdAt_-1",
+      "key": {
+        "createdAt": -1
+      }
+    }
+  ],
+  "notification_logs": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    },
+    {
+      "name": "key_1",
+      "key": {
+        "key": 1
+      },
+      "unique": true
+    },
+    {
+      "name": "createdAt_-1",
+      "key": {
+        "createdAt": -1
+      }
+    }
+  ],
+  "audit_logs": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    },
+    {
+      "name": "createdAt_-1",
+      "key": {
+        "createdAt": -1
+      }
+    }
+  ],
+  "rate_limits": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    },
+    {
+      "name": "key_1",
+      "key": {
+        "key": 1
+      },
+      "unique": true
+    },
+    {
+      "name": "expiresAt_1",
+      "key": {
+        "expiresAt": 1
+      },
+      "expireAfterSeconds": 0
+    }
+  ],
+  "site_content": [
+    {
+      "name": "_id_",
+      "key": {
+        "_id": 1
+      }
+    }
+  ]
+}

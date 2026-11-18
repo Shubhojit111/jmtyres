@@ -1,0 +1,513 @@
+{
+  "checkedAt": "2026-11-18T07:54:32.854Z",
+  "target": "http://127.0.0.1:4001",
+  "baseline": "http://127.0.0.1:4000",
+  "passed": 53,
+  "crossServerSessions": true,
+  "tests": [
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "status": 200,
+      "keys": [
+        "database",
+        "images",
+        "notifications",
+        "ok",
+        "payments"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/me",
+      "status": 200,
+      "keys": [
+        "user"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/register",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "status": 401,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "status": 200,
+      "keys": [
+        "signedOut"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/auth/profile",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/forgot-password",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/reset-password",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/products?limit=3",
+      "status": 200,
+      "keys": [
+        "items",
+        "limit",
+        "page",
+        "pages",
+        "total"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/products/search?limit=3",
+      "status": 200,
+      "keys": [
+        "items",
+        "limit",
+        "page",
+        "pages",
+        "total"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/products/demo-qa-test-tyre-08125c43-qa-08125c43",
+      "status": 200,
+      "keys": [
+        "product"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/categories",
+      "status": 200,
+      "keys": [
+        "items"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/brands",
+      "status": 200,
+      "keys": [
+        "items"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/home",
+      "status": 200,
+      "keys": [
+        "content"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/tyre-finder/search",
+      "status": 200,
+      "keys": [
+        "alternatives",
+        "items",
+        "method",
+        "total",
+        "verifiedFitment"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/tyre-finder/vehicle-options",
+      "status": 200,
+      "keys": [
+        "items"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/enquiries",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/requests/my",
+      "status": 200,
+      "keys": [
+        "items",
+        "page",
+        "pages",
+        "total"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/requests",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/requests/JM-DOES-NOT-EXIST",
+      "status": 404,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/requests/JM-DOES-NOT-EXIST/payment",
+      "status": 404,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/payments/config",
+      "status": 200,
+      "keys": [
+        "currency",
+        "demoNotice",
+        "keyId",
+        "liveReady",
+        "mode"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/payments/webhook",
+      "status": 503,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/payments/create-order",
+      "status": 404,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/payments/verify",
+      "status": 503,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/payments/demo/accept",
+      "status": 404,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/payments/demo/verify",
+      "status": 404,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/payments/demo/fail",
+      "status": 404,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/settings",
+      "status": 200,
+      "keys": [
+        "callPhone",
+        "images",
+        "notifications",
+        "payment",
+        "whatsAppPhone"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/dashboard",
+      "status": 200,
+      "keys": [
+        "approved",
+        "lowStock",
+        "outOfStock",
+        "paid",
+        "pending",
+        "realSuccessfulPayments",
+        "recentRequests",
+        "recentTransactions",
+        "rejected",
+        "totalCustomers",
+        "totalProducts",
+        "totalRequests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/content/home",
+      "status": 200,
+      "keys": [
+        "content"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/admin/content/home",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/products/images",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/admin/products/images?url=not-an-upload",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/products?limit=3",
+      "status": 200,
+      "keys": [
+        "items",
+        "page",
+        "pages",
+        "total"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/products",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/products/6afd595cf06e7e0f4271d34d",
+      "status": 200,
+      "keys": [
+        "product"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/api/admin/products/6afd595cf06e7e0f4271d34d",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/admin/products/6afd595cf06e7e0f4271d34d/stock",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/admin/products/not-an-id",
+      "status": 400,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/requests?limit=3",
+      "status": 200,
+      "keys": [
+        "items",
+        "page",
+        "pages",
+        "total"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/requests/JM-261118-F5D39DB82B",
+      "status": 200,
+      "keys": [
+        "request"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/admin/requests/JM-DOES-NOT-EXIST/approve",
+      "status": 409,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/admin/requests/JM-DOES-NOT-EXIST/reject",
+      "status": 409,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/admin/requests/JM-DOES-NOT-EXIST/cancel",
+      "status": 409,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/admin/requests/JM-DOES-NOT-EXIST/complete",
+      "status": 409,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/enquiries",
+      "status": 200,
+      "keys": [
+        "items",
+        "page",
+        "pages",
+        "total"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/admin/enquiries/not-an-id",
+      "status": 404,
+      "keys": [
+        "code",
+        "error"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/customers",
+      "status": 200,
+      "keys": [
+        "items",
+        "page",
+        "pages",
+        "total"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/customers/6afd59b7f06e7e0f4271d386",
+      "status": 200,
+      "keys": [
+        "requests",
+        "user"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/notifications",
+      "status": 200,
+      "keys": [
+        "items"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/audit",
+      "status": 200,
+      "keys": [
+        "items"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/demo-seed",
+      "status": 200,
+      "keys": [
+        "inserted",
+        "message",
+        "totalFixtures"
+      ]
+    }
+  ]
+}

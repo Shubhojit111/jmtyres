@@ -1,0 +1,240 @@
+{
+  "checkedAt": "2026-11-18T07:57:14.610Z",
+  "base": "http://127.0.0.1:3000",
+  "checks": [
+    "Engineering stays inside its allocated section at 16 widths (320–1920px), with five primary links and two brand bands",
+    "About image is compact and four main subpages have useful new sections without overflow at 320/390/768/1440px",
+    "Service brands have locally served, loaded logo images and an explicit demo disclaimer",
+    "Anonymous visitors can check catalogue availability and exact-size finder results without sign-in",
+    "Headings enter from both sides and a lazy workshop image reveals after loading",
+    "Bands run in opposite directions, reviews move left and both animations can be paused",
+    "Reduced-motion users receive non-moving, readable brand and review content"
+  ],
+  "widths": [
+    {
+      "width": 320,
+      "documentWidth": 320,
+      "gap": 29,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 360,
+      "documentWidth": 360,
+      "gap": 29,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 390,
+      "documentWidth": 390,
+      "gap": 29,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 720,
+      "documentWidth": 720,
+      "gap": 29,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 721,
+      "documentWidth": 721,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 768,
+      "documentWidth": 768,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 970,
+      "documentWidth": 970,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 971,
+      "documentWidth": 971,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 1080,
+      "documentWidth": 1080,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 1200,
+      "documentWidth": 1200,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 1250,
+      "documentWidth": 1250,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 1280,
+      "documentWidth": 1280,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 1357,
+      "documentWidth": 1357,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 1440,
+      "documentWidth": 1440,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 1600,
+      "documentWidth": 1600,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    },
+    {
+      "width": 1920,
+      "documentWidth": 1920,
+      "gap": 52,
+      "overflow": 0,
+      "nav": [
+        "Home",
+        "Find Tyres",
+        "Services",
+        "About",
+        "Contact"
+      ],
+      "bands": 2
+    }
+  ],
+  "result": "passed"
+}

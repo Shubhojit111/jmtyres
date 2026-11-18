@@ -1,0 +1,3 @@
+export const formatINR = paise => `₹${(Number(paise || 0) / 100).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+export const formatDate = date => date ? new Date(date).toLocaleDateString('en-IN', { day:'numeric',month:'short',year:'numeric' }) : '—';
+export const statusLabel = value => ({pending:'Pending',awaiting_payment:'Awaiting payment',paid:'Paid',rejected:'Rejected',completed:'Completed',cancelled:'Cancelled',not_initiated:'Not initiated',partially_paid:'Partially paid',successful:'Successful',failed:'Failed'})[value] || String(value || '').replace(/_/g,' ');

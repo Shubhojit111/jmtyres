@@ -1,0 +1,24 @@
+import { Router } from 'express';
+import { requireAdmin } from '../middleware/authMiddleware.js';
+import { settings, seedDemo, notifications, audit } from '../controllers/adminController.js';
+import { dashboard } from '../controllers/dashboardController.js';
+import { asyncRoute } from '../utils/http.js';
+import contentRoutes from './adminContentRoutes.js';
+import productRoutes from './adminProductRoutes.js';
+import requestRoutes from './adminRequestRoutes.js';
+import enquiryRoutes from './adminEnquiryRoutes.js';
+import customerRoutes from './adminCustomerRoutes.js';
+
+const router=Router();
+router.use(requireAdmin);
+router.get('/settings',settings);
+router.post('/demo-seed',asyncRoute(seedDemo));
+router.get('/dashboard',asyncRoute(dashboard));
+router.use('/content',contentRoutes);
+router.use('/products',productRoutes);
+router.use('/requests',requestRoutes);
+router.use('/enquiries',enquiryRoutes);
+router.use('/customers',customerRoutes);
+router.get('/notifications',asyncRoute(notifications));
+router.get('/audit',asyncRoute(audit));
+export default router;

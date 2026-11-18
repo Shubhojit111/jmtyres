@@ -1,0 +1,32 @@
+{
+  "goodyear": {
+    "officialSite": "https://www.goodyear.co.in/",
+    "assetSource": "https://www.goodyear.co.in/wp-content/themes/goodyearforward/assets/images/logo-yellow.svg",
+    "rights": "Manufacturer trademark. Used to identify brands in the sample catalogue; shop owner should confirm permission before commercial deployment."
+  },
+  "ceat": {
+    "officialSite": "https://www.ceat.com/",
+    "assetSource": "https://www.ceat.com/content/dam/ceat/website/logo.png",
+    "rights": "Manufacturer trademark. Used to identify brands in the sample catalogue; shop owner should confirm permission before commercial deployment."
+  },
+  "continental": {
+    "officialSite": "https://www.continental-tires.com/",
+    "assetSource": "https://www.continental-tires.com/content/dam/conti-tires-cms/continental/brand/basics/Continental_Logo_large.svg",
+    "rights": "Manufacturer trademark. Used to identify brands in the sample catalogue; shop owner should confirm permission before commercial deployment."
+  },
+  "yokohama": {
+    "officialSite": "https://www.yokohamatire.com/",
+    "assetSource": "https://www.yokohamatire.com/_next/static/media/mainlogo.2iqwh2luj4xcg.svg",
+    "rights": "Manufacturer trademark. Used to identify brands in the sample catalogue; shop owner should confirm permission before commercial deployment."
+  },
+  "mrf": {
+    "officialSite": "https://www.mrftyres.com/",
+    "assetSource": "https://www.mrftyres.com/images/mrf-logo.png",
+    "rights": "Manufacturer trademark. Used to identify brands in the sample catalogue; shop owner should confirm permission before commercial deployment."
+  },
+  "jk-tyre": {
+    "officialSite": "https://www.jktyre.com/",
+    "assetSource": "https://dwzytf8fljslz.cloudfront.net/Jk_Logo_Square_036aed0631.svg",
+    "rights": "Manufacturer trademark. Used to identify brands in the sample catalogue; shop owner should confirm permission before commercial deployment."
+  }
+}

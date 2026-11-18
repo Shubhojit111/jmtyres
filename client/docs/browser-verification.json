@@ -1,0 +1,502 @@
+{
+  "inspectedAt": "2026-11-18T07:55:44.855Z",
+  "base": "http://127.0.0.1:3000",
+  "viewportRoutes": [
+    {
+      "route": "/",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 50,
+      "headings": 1,
+      "title": "J.M. Tyre Services | Tyres & Wheel Care in Mulund West",
+      "linkCount": 75
+    },
+    {
+      "route": "/find-tyres",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 4,
+      "headings": 1,
+      "title": "Find Tyres by Size or Verified Vehicle Match | J.M. Tyres",
+      "linkCount": 28
+    },
+    {
+      "route": "/brands",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 3,
+      "headings": 1,
+      "title": "Tyre Brands | J.M. Tyre Services",
+      "linkCount": 32
+    },
+    {
+      "route": "/services",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 13,
+      "headings": 1,
+      "title": "Tyre & Wheel Services in Mulund West | J.M. Tyre Services",
+      "linkCount": 39
+    },
+    {
+      "route": "/gallery",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 11,
+      "headings": 1,
+      "title": "Photo Gallery & J.M. Shop Sign | Tyres Mulund West",
+      "linkCount": 26
+    },
+    {
+      "route": "/offers",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 3,
+      "headings": 1,
+      "title": "Tyre Offers & Current Prices | J.M. Tyre Services Mulund West",
+      "linkCount": 25
+    },
+    {
+      "route": "/about",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 4,
+      "headings": 1,
+      "title": "About J.M. Tyre Services | Local Tyre Shop in Mulund West",
+      "linkCount": 30
+    },
+    {
+      "route": "/contact",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 3,
+      "headings": 1,
+      "title": "Call, WhatsApp & Directions | J.M. Tyre Services Mulund West",
+      "linkCount": 33
+    },
+    {
+      "route": "/services/new-tyres",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 4,
+      "headings": 1,
+      "title": "New Tyres & Fitting in Mulund West | J.M. Tyre Services",
+      "linkCount": 29
+    },
+    {
+      "route": "/services/puncture-repair",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 4,
+      "headings": 1,
+      "title": "Puncture Repair Enquiries in Mulund West | J.M. Tyre Services",
+      "linkCount": 29
+    },
+    {
+      "route": "/services/wheel-alignment",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 4,
+      "headings": 1,
+      "title": "Wheel Alignment Enquiries in Mulund West | J.M. Tyre Services",
+      "linkCount": 29
+    },
+    {
+      "route": "/services/wheel-balancing",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 4,
+      "headings": 1,
+      "title": "Wheel Balancing Enquiries in Mulund West | J.M. Tyre Services",
+      "linkCount": 29
+    },
+    {
+      "route": "/catalogue",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 14,
+      "headings": 1,
+      "title": "Tyre Catalogue | J.M. Tyre Services Mulund West",
+      "linkCount": 59
+    },
+    {
+      "route": "/account",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 2,
+      "headings": 1,
+      "title": "My Account | J.M. Tyres",
+      "linkCount": 24
+    },
+    {
+      "route": "/admin/login",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 2,
+      "headings": 1,
+      "title": "Admin Sign In | J.M. Tyres",
+      "linkCount": 24
+    },
+    {
+      "route": "/tyres/demo-city-touring-c-205-55-r16",
+      "width": 1440,
+      "viewport": 1440,
+      "images": 3,
+      "headings": 1,
+      "title": "DEMO · City Touring C 205/55 R16 | J.M. Tyres",
+      "linkCount": 26
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "viewport": 390,
+      "images": 50,
+      "headings": 1,
+      "title": "J.M. Tyre Services | Tyres & Wheel Care in Mulund West",
+      "linkCount": 75
+    },
+    {
+      "route": "/find-tyres",
+      "width": 390,
+      "viewport": 390,
+      "images": 4,
+      "headings": 1,
+      "title": "Find Tyres by Size or Verified Vehicle Match | J.M. Tyres",
+      "linkCount": 28
+    },
+    {
+      "route": "/brands",
+      "width": 390,
+      "viewport": 390,
+      "images": 3,
+      "headings": 1,
+      "title": "Tyre Brands | J.M. Tyre Services",
+      "linkCount": 32
+    },
+    {
+      "route": "/services",
+      "width": 390,
+      "viewport": 390,
+      "images": 13,
+      "headings": 1,
+      "title": "Tyre & Wheel Services in Mulund West | J.M. Tyre Services",
+      "linkCount": 39
+    },
+    {
+      "route": "/gallery",
+      "width": 390,
+      "viewport": 390,
+      "images": 11,
+      "headings": 1,
+      "title": "Photo Gallery & J.M. Shop Sign | Tyres Mulund West",
+      "linkCount": 26
+    },
+    {
+      "route": "/offers",
+      "width": 390,
+      "viewport": 390,
+      "images": 3,
+      "headings": 1,
+      "title": "Tyre Offers & Current Prices | J.M. Tyre Services Mulund West",
+      "linkCount": 25
+    },
+    {
+      "route": "/about",
+      "width": 390,
+      "viewport": 390,
+      "images": 4,
+      "headings": 1,
+      "title": "About J.M. Tyre Services | Local Tyre Shop in Mulund West",
+      "linkCount": 30
+    },
+    {
+      "route": "/contact",
+      "width": 390,
+      "viewport": 390,
+      "images": 3,
+      "headings": 1,
+      "title": "Call, WhatsApp & Directions | J.M. Tyre Services Mulund West",
+      "linkCount": 33
+    },
+    {
+      "route": "/services/new-tyres",
+      "width": 390,
+      "viewport": 390,
+      "images": 4,
+      "headings": 1,
+      "title": "New Tyres & Fitting in Mulund West | J.M. Tyre Services",
+      "linkCount": 29
+    },
+    {
+      "route": "/services/puncture-repair",
+      "width": 390,
+      "viewport": 390,
+      "images": 4,
+      "headings": 1,
+      "title": "Puncture Repair Enquiries in Mulund West | J.M. Tyre Services",
+      "linkCount": 29
+    },
+    {
+      "route": "/services/wheel-alignment",
+      "width": 390,
+      "viewport": 390,
+      "images": 4,
+      "headings": 1,
+      "title": "Wheel Alignment Enquiries in Mulund West | J.M. Tyre Services",
+      "linkCount": 29
+    },
+    {
+      "route": "/services/wheel-balancing",
+      "width": 390,
+      "viewport": 390,
+      "images": 4,
+      "headings": 1,
+      "title": "Wheel Balancing Enquiries in Mulund West | J.M. Tyre Services",
+      "linkCount": 29
+    },
+    {
+      "route": "/catalogue",
+      "width": 390,
+      "viewport": 390,
+      "images": 14,
+      "headings": 1,
+      "title": "Tyre Catalogue | J.M. Tyre Services Mulund West",
+      "linkCount": 59
+    },
+    {
+      "route": "/account",
+      "width": 390,
+      "viewport": 390,
+      "images": 2,
+      "headings": 1,
+      "title": "My Account | J.M. Tyres",
+      "linkCount": 24
+    },
+    {
+      "route": "/admin/login",
+      "width": 390,
+      "viewport": 390,
+      "images": 2,
+      "headings": 1,
+      "title": "Admin Sign In | J.M. Tyres",
+      "linkCount": 24
+    },
+    {
+      "route": "/tyres/demo-city-touring-c-205-55-r16",
+      "width": 390,
+      "viewport": 390,
+      "images": 3,
+      "headings": 1,
+      "title": "DEMO · City Touring C 205/55 R16 | J.M. Tyres",
+      "linkCount": 26
+    },
+    {
+      "route": "/",
+      "width": 320,
+      "viewport": 320,
+      "images": 50,
+      "headings": 1,
+      "title": "J.M. Tyre Services | Tyres & Wheel Care in Mulund West",
+      "linkCount": 75
+    },
+    {
+      "route": "/find-tyres",
+      "width": 320,
+      "viewport": 320,
+      "images": 4,
+      "headings": 1,
+      "title": "Find Tyres by Size or Verified Vehicle Match | J.M. Tyres",
+      "linkCount": 28
+    },
+    {
+      "route": "/contact",
+      "width": 320,
+      "viewport": 320,
+      "images": 3,
+      "headings": 1,
+      "title": "Call, WhatsApp & Directions | J.M. Tyre Services Mulund West",
+      "linkCount": 33
+    },
+    {
+      "route": "/catalogue",
+      "width": 320,
+      "viewport": 320,
+      "images": 14,
+      "headings": 1,
+      "title": "Tyre Catalogue | J.M. Tyre Services Mulund West",
+      "linkCount": 59
+    },
+    {
+      "route": "/account",
+      "width": 320,
+      "viewport": 320,
+      "images": 2,
+      "headings": 1,
+      "title": "My Account | J.M. Tyres",
+      "linkCount": 24
+    },
+    {
+      "route": "/admin/login",
+      "width": 320,
+      "viewport": 320,
+      "images": 2,
+      "headings": 1,
+      "title": "Admin Sign In | J.M. Tyres",
+      "linkCount": 24
+    },
+    {
+      "route": "/tyres/demo-city-touring-c-205-55-r16",
+      "width": 320,
+      "viewport": 320,
+      "images": 3,
+      "headings": 1,
+      "title": "DEMO · City Touring C 205/55 R16 | J.M. Tyres",
+      "linkCount": 26
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "viewport": 768,
+      "images": 50,
+      "headings": 1,
+      "title": "J.M. Tyre Services | Tyres & Wheel Care in Mulund West",
+      "linkCount": 75
+    },
+    {
+      "route": "/find-tyres",
+      "width": 768,
+      "viewport": 768,
+      "images": 4,
+      "headings": 1,
+      "title": "Find Tyres by Size or Verified Vehicle Match | J.M. Tyres",
+      "linkCount": 28
+    },
+    {
+      "route": "/contact",
+      "width": 768,
+      "viewport": 768,
+      "images": 3,
+      "headings": 1,
+      "title": "Call, WhatsApp & Directions | J.M. Tyre Services Mulund West",
+      "linkCount": 33
+    },
+    {
+      "route": "/catalogue",
+      "width": 768,
+      "viewport": 768,
+      "images": 14,
+      "headings": 1,
+      "title": "Tyre Catalogue | J.M. Tyre Services Mulund West",
+      "linkCount": 59
+    },
+    {
+      "route": "/account",
+      "width": 768,
+      "viewport": 768,
+      "images": 2,
+      "headings": 1,
+      "title": "My Account | J.M. Tyres",
+      "linkCount": 24
+    },
+    {
+      "route": "/admin/login",
+      "width": 768,
+      "viewport": 768,
+      "images": 2,
+      "headings": 1,
+      "title": "Admin Sign In | J.M. Tyres",
+      "linkCount": 24
+    },
+    {
+      "route": "/tyres/demo-city-touring-c-205-55-r16",
+      "width": 768,
+      "viewport": 768,
+      "images": 3,
+      "headings": 1,
+      "title": "DEMO · City Touring C 205/55 R16 | J.M. Tyres",
+      "linkCount": 26
+    },
+    {
+      "route": "/",
+      "width": 1080,
+      "viewport": 1080,
+      "images": 50,
+      "headings": 1,
+      "title": "J.M. Tyre Services | Tyres & Wheel Care in Mulund West",
+      "linkCount": 75
+    },
+    {
+      "route": "/find-tyres",
+      "width": 1080,
+      "viewport": 1080,
+      "images": 4,
+      "headings": 1,
+      "title": "Find Tyres by Size or Verified Vehicle Match | J.M. Tyres",
+      "linkCount": 28
+    },
+    {
+      "route": "/contact",
+      "width": 1080,
+      "viewport": 1080,
+      "images": 3,
+      "headings": 1,
+      "title": "Call, WhatsApp & Directions | J.M. Tyre Services Mulund West",
+      "linkCount": 33
+    },
+    {
+      "route": "/catalogue",
+      "width": 1080,
+      "viewport": 1080,
+      "images": 14,
+      "headings": 1,
+      "title": "Tyre Catalogue | J.M. Tyre Services Mulund West",
+      "linkCount": 59
+    },
+    {
+      "route": "/account",
+      "width": 1080,
+      "viewport": 1080,
+      "images": 2,
+      "headings": 1,
+      "title": "My Account | J.M. Tyres",
+      "linkCount": 24
+    },
+    {
+      "route": "/admin/login",
+      "width": 1080,
+      "viewport": 1080,
+      "images": 2,
+      "headings": 1,
+      "title": "Admin Sign In | J.M. Tyres",
+      "linkCount": 24
+    },
+    {
+      "route": "/tyres/demo-city-touring-c-205-55-r16",
+      "width": 1080,
+      "viewport": 1080,
+      "images": 3,
+      "headings": 1,
+      "title": "DEMO · City Touring C 205/55 R16 | J.M. Tyres",
+      "linkCount": 26
+    }
+  ],
+  "checks": [
+    "16 routes responsive at 1440px with no overflow, broken images or browser exceptions",
+    "16 routes responsive at 390px with no overflow, broken images or browser exceptions",
+    "7 routes responsive at 320px with no overflow, broken images or browser exceptions",
+    "7 routes responsive at 768px with no overflow, broken images or browser exceptions",
+    "7 routes responsive at 1080px with no overflow, broken images or browser exceptions",
+    "Mobile menu opens, Escape closes, and route navigation closes it",
+    "Tyre finder validates input and returns database products by exact size with DEMO label",
+    "Service tabs, category rotation/search and View all catalogue navigation work",
+    "Catalogue pagination, category, stock, exact-size filtering, sorting and clear controls work",
+    "Product details, stock state and request CTA reflect database records",
+    "Contact enquiry saves before an optional, correctly prefilled WhatsApp draft",
+    "Owner signs in to the protected console with demo/payment/storage configuration visible",
+    "Customer registration, return-to-request, form submission and pending history work",
+    "Owner approval reserves stock; separate demo accept/verify records a simulated transaction without Razorpay",
+    "Owner marks paid demo request complete; customer sees updated status and history",
+    "Forgot/reset works while signed in, resets the session and uses a reachable preview link"
+  ],
+  "result": "passed"
+}

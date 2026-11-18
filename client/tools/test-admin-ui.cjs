@@ -1,0 +1,32 @@
+/* Browser QA for owner product CRUD, image upload, stock and explicit compatibility.
+ * Run against `npm run dev` with local DB; production uploads require Cloudflare R2. */
+const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');const {randomBytes}=require('node:crypto');const {chromium}=require('playwright');
+const ROOT=path.resolve(__dirname,'..'),BASE=process.env.TEST_URL||'http://127.0.0.1:3000';
+const file=path.join(ROOT,'.local/preview-credentials');
+const secrets=process.env.ADMIN_EMAIL&&process.env.ADMIN_PASSWORD
+  ? {ADMIN_EMAIL:process.env.ADMIN_EMAIL,ADMIN_PASSWORD:process.env.ADMIN_PASSWORD}
+  : fs.existsSync(file) ? Object.fromEntries(fs.readFileSync(file,'utf8').trim().split(/\r?\n/).map(x=>[x.split('=')[0],x.slice(x.indexOf('=')+1)]))
+  : null;
+if(!secrets)throw Error('Set ADMIN_EMAIL and ADMIN_PASSWORD before running admin UI QA.');
+let browser,product=null,image='';
+(async()=>{browser=await chromium.launch({...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{}),args:['--no-sandbox']});const context=await browser.newContext({viewport:{width:1280,height:900},baseURL:BASE});const page=await context.newPage();page.setDefaultTimeout(20000);
+  await page.goto('/admin/login',{waitUntil:'domcontentloaded'});await page.locator('input[type="email"]').fill(secrets.ADMIN_EMAIL);await page.locator('input[type="password"]').fill(secrets.ADMIN_PASSWORD);await page.getByRole('button',{name:'Sign in'}).click();await page.waitForURL('**/admin',{waitUntil:'domcontentloaded'});
+  await page.goto('/admin/products',{waitUntil:'domcontentloaded'});await page.getByRole('button',{name:'Add product'}).click();const form=page.locator('form').filter({has:page.getByRole('heading',{name:'New product'})});
+  const tag=randomBytes(4).toString('hex');const name=`DEMO · Browser CRUD tyre ${tag}`;const sku=`DEMO-BROWSER-${tag}`;
+  await form.getByLabel('Product name').fill(name);await form.getByLabel('SKU / product code').fill(sku);await form.getByLabel('Brand',{exact:true}).fill('QA Browser Brand');await form.getByLabel('Category',{exact:true}).fill('Car');await form.getByLabel('Selling price (₹)').fill('1399.00');await form.getByLabel('Stock quantity').fill('5');await form.getByLabel('Description').fill('Fictitious browser QA inventory for a verified demo-only compatibility mapping. Not a genuine stocked tyre or offer.');
+  await form.getByLabel('Width (mm)').fill('205');await form.getByLabel('Aspect ratio').fill('55');await form.getByLabel('Rim diameter (in)').fill('16');
+  await form.getByLabel('DEMO / fictitious product').check();
+  await form.locator('input[type="file"]').setInputFiles(path.join(ROOT,'assets/images/TireTread.jpg'));
+  await form.locator('img[src^="/uploads/products/"]').waitFor({timeout:25000});image=await form.locator('img[src^="/uploads/products/"]').first().getAttribute('src');assert(image);
+  await form.getByRole('button',{name:'+ Add mapping'}).click();await form.getByLabel('Manufacturer').fill('QA Browser Make');await form.getByLabel('Model',{exact:true}).fill('Browser Vehicle');
+  await form.getByRole('button',{name:/Create product/}).click();await page.getByRole('status').filter({hasText:/saved/}).waitFor({timeout:25000});
+  const response=await context.request.get(`/api/admin/products?q=${encodeURIComponent(sku)}`);assert.equal(response.status(),200);product=(await response.json()).items[0];assert(product?.isDemo && product.images[0].url===image && product.compatibility[0].model==='Browser Vehicle');console.log('PASS: Owner form creates a DEMO product, uploads its image, and stores only entered fitment.');
+  await page.getByRole('button',{name:`Edit ${name}`}).click();const edit=page.locator('form').filter({has:page.getByRole('heading',{name:'Edit product'})});await edit.getByLabel('Stock quantity').fill('4');await edit.getByRole('button',{name:/Save changes/}).click();await page.getByRole('status').filter({hasText:/saved/}).waitFor();
+  const logs=(await (await context.request.get('/api/admin/notifications')).json()).items;assert(logs.some(x=>x.subject?.includes(`Low stock · ${name}`)));console.log('PASS: Owner stock update crosses five-to-four threshold and records a low-stock alert.');
+  await page.goto('/find-tyres',{waitUntil:'domcontentloaded'});await page.locator('#finder-make').selectOption('QA Browser Make');await page.locator('#finder-model').fill('Browser Vehicle');await page.locator('.finder-submit').click();await page.locator('.finder-result').filter({hasText:name}).waitFor();
+  await page.locator('#finder-model').fill('Made-up other vehicle');await page.locator('.finder-submit').click();await page.locator('.finder-result').filter({hasText:'No matching tyres found'}).waitFor();console.log('PASS: Browser finder matches the saved make/model, never a guessed one.');
+  await page.goto('/admin/products',{waitUntil:'domcontentloaded'});await page.getByRole('button',{name:`Edit ${name}`}).click();const edit2=page.locator('form').filter({has:page.getByRole('heading',{name:'Edit product'})});await edit2.getByRole('button',{name:'Remove image'}).click();await edit2.getByRole('button',{name:/Save changes/}).click();await page.getByRole('status').filter({hasText:/saved/}).waitFor();
+  const noImage=(await (await context.request.get(`/api/admin/products/${product.id}`)).json()).product;assert.equal(noImage.images.length,0);assert.equal((await context.request.get(image)).status(),404);console.log('PASS: Owner removes an uploaded image from the product and local storage.');
+  page.once('dialog',d=>d.accept());await page.getByRole('button',{name:`Delete ${name}`}).click();await page.getByRole('status').filter({hasText:/Product deleted/}).waitFor();product=null;console.log('PASS: Owner removes a test product with no historical orders.');
+  await context.close();
+})().catch(e=>{console.error('ADMIN UI QA FAILED:',e);process.exitCode=1;}).finally(async()=>{if(product&&browser){try{const c=await browser.newContext({baseURL:BASE});const req=c.request;const login=await req.post('/api/auth/login',{data:{email:secrets.ADMIN_EMAIL,password:secrets.ADMIN_PASSWORD}});if(login.ok()){await req.delete(`/api/admin/products/${product.id}`);if(image)await req.delete(`/api/admin/products/images?url=${encodeURIComponent(image)}`);}await c.close();}catch(e){console.error('QA cleanup needs manual attention:',e.message);}}if(browser)await browser.close();});

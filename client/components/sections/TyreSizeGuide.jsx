@@ -1,0 +1,13 @@
+import { ArrowUpRight, ScanSearch } from 'lucide-react';
+import SectionTag from '@/components/ui/SectionTag';
+
+const parts = [
+  { code: '205', label: 'Width', explanation: 'Tyre width in millimetres' },
+  { code: '55', label: 'Profile', explanation: 'Sidewall height as a percentage of width' },
+  { code: 'R', label: 'Construction', explanation: 'Radial construction' },
+  { code: '16', label: 'Rim', explanation: 'Wheel diameter in inches' },
+];
+
+export default function TyreSizeGuide() {
+  return <section aria-labelledby="sidewall-heading" className="page-block mx-4 mt-12 grid gap-7 rounded-[20px] bg-[#173b29] px-5 py-8 text-white sm:mx-8 sm:mt-14 sm:px-9 sm:py-10 lg:grid-cols-[.85fr_1.15fr] lg:gap-12" id="sidewall-guide"><div><SectionTag>Know your sidewall</SectionTag><h2 className="mt-4 max-w-[470px] text-[30px] font-extrabold leading-[1.06] tracking-[-.075em] sm:text-[43px]" id="sidewall-heading">Four clues printed on every tyre.</h2><p className="mt-4 max-w-[500px] text-[13px] leading-relaxed text-[#d5e5d6]">Here is how to read an <strong>example</strong> code. It does not mean this size suits your vehicle. Check your vehicle’s specified size, load and speed requirements and ask the shop to confirm final fitment.</p><a className="mt-6 inline-flex items-center gap-1 text-[12px] font-extrabold text-[#ecf5e6] underline underline-offset-4" href="/catalogue">Browse products and stock without signing in <ArrowUpRight aria-hidden="true" size={16} /></a></div><div className="rounded-2xl border border-[#4c7656] bg-[#264a32] p-4 sm:p-6"><div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-widest text-[#deecdb]"><ScanSearch aria-hidden="true" size={18}/> Example sidewall code</div><div aria-label="Example tyre size 205 slash 55 R 16" className="my-5 flex flex-wrap items-baseline gap-x-1 gap-y-2 text-[40px] font-extrabold tracking-[-.08em] sm:text-[55px]"><span>205</span><span className="text-[#a8cba9]">/</span><span>55</span><span className="pl-2 text-[#a8cba9]">R</span><span>16</span></div><div className="grid grid-cols-2 gap-2 sm:grid-cols-4">{parts.map(part => <div className="rounded-xl bg-[#f3f8f0] p-3 text-[#1d3e29]" key={part.label}><strong className="block text-[17px] font-extrabold">{part.code}</strong><span className="mt-1 block text-[11px] font-extrabold">{part.label}</span><p className="mt-1 text-[10px] leading-snug text-[#526a58]">{part.explanation}</p></div>)}</div><p className="mt-4 text-[11px] leading-relaxed text-[#d6e6d7]">Searching and checking catalogue availability is public. An account is needed only to submit a purchase request or track it. DEMO stock and prices are testing examples, not shop inventory.</p></div></section>;
+}
