@@ -1,6 +1,94 @@
-'use client';
-import { useEffect,useState } from 'react';
-import { api } from './api';
-import { formatDate } from '@/lib/data/money';
-export default function AdminNotifications({audit=false}){const [data,setData]=useState(null),[error,setError]=useState('');useEffect(()=>{api(audit?'/api/admin/audit':'/api/admin/notifications').then(setData).catch(e=>setError(e.message));},[audit]);return <div><span className="text-[10px] font-extrabold uppercase text-[#3a7650]">{audit?'Owner activity trail':'Delivery status, not delivery promises'}</span><h2 className="mt-1 text-[30px] font-extrabold tracking-[-.07em]">{audit?'Admin activity':'Notification log'}</h2>{!audit&&<p className="mt-2 text-[12px] text-[#5e7562]">Emails are sent only when SMTP and an owner email are configured; otherwise they appear as demo logs. WhatsApp is never sent by the server. Customer buttons open WhatsApp with a draft, and the customer chooses whether to tap Send.</p>}{error&&<p className="mt-4 text-[12px] text-red-800" role="alert">{error}</p>}<div className="mt-5 space-y-2">{data?.items.map(entry=><article className="rounded-xl border border-[#e0eae0] bg-[#f9fbf8] p-4" key={entry.id}>{audit?<><strong className="text-[12px]">{entry.type?.replace(/_/g,' ')}</strong><p className="mt-1 text-[11px] text-[#607665]">{formatDate(entry.createdAt)} · {entry.actorId||'system'}</p></>:<><div className="flex flex-wrap justify-between gap-2"><strong className="text-[12px]">{entry.subject}</strong><span className={`rounded-full px-2 py-1 text-[10px] font-bold ${entry.status==='sent'?'bg-[#ddeddd] text-[#275f39]':entry.status==='failed'?'bg-red-100 text-red-800':'bg-[#e9efe5] text-[#496b50]'}`}>{entry.channel} · {entry.status.replace(/_/g,' ')}</span></div><p className="mt-1 text-[11px] text-[#607665]">To: {entry.recipient} · {formatDate(entry.createdAt)}</p><details className="mt-2 text-[11px] text-[#536b59]"><summary className="cursor-pointer font-bold">View logged message</summary><p className="mt-2 whitespace-pre-wrap">{entry.message}</p>{entry.link&&<a className="mt-2 inline-block break-all text-[#285f3c] underline" href={entry.link}>{entry.link}</a>}{entry.error&&<p className="mt-2 text-red-800">Error: {entry.error}</p>}</details></>}</article>)}{data&&!data.items.length&&<p className="rounded-xl bg-[#f4f8f3] p-6 text-[12px]">No records yet.</p>}{!data&&<p className="text-[12px]">Loading records…</p>}</div></div>;
+"use client";
+import { useEffect, useState } from "react";
+import { api } from "./api";
+import { formatDate } from "@/lib/data/money";
+export default function AdminNotifications({ audit = false }) {
+  const [data, setData] = useState(null),
+    [error, setError] = useState("");
+  useEffect(() => {
+    api(audit ? "/api/admin/audit" : "/api/admin/notifications")
+      .then(setData)
+      .catch((e) => setError(e.message));
+  }, [audit]);
+  return (
+    <div>
+      <span className="text-[10px] font-extrabold uppercase text-[#3a7650]">
+        {audit
+          ? "Owner activity trail"
+          : "Delivery status, not delivery promises"}
+      </span>
+      <h2 className="mt-1 text-[30px] font-extrabold tracking-[-.07em]">
+        {audit ? "Admin activity" : "Notification log"}
+      </h2>
+      {!audit && (
+        <p className="mt-2 text-[12px] text-[#5e7562]">
+          Emails are sent only when SMTP and an owner email are configured;
+          otherwise they appear as demo logs. WhatsApp is never sent by the
+          server. Customer buttons open WhatsApp with a draft, and the customer
+          chooses whether to tap Send.
+        </p>
+      )}
+      {error && (
+        <p className="mt-4 text-[12px] text-red-800" role="alert">
+          {error}
+        </p>
+      )}
+      <div className="mt-5 space-y-2">
+        {data?.items.map((entry) => (
+          <article
+            className="rounded-xl border border-[#e0eae0] bg-[#f9fbf8] p-4"
+            key={entry.id}
+          >
+            {audit ? (
+              <>
+                <strong className="text-[12px]">
+                  {entry.type?.replace(/_/g, " ")}
+                </strong>
+                <p className="mt-1 text-[11px] text-[#607665]">
+                  {formatDate(entry.createdAt)} · {entry.actorId || "system"}
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="flex flex-wrap justify-between gap-2">
+                  <strong className="text-[12px]">{entry.subject}</strong>
+                  <span
+                    className={`rounded-full px-2 py-1 text-[10px] font-bold ${entry.status === "sent" ? "bg-[#ddeddd] text-[#275f39]" : entry.status === "failed" ? "bg-red-100 text-red-800" : "bg-[#e9efe5] text-[#496b50]"}`}
+                  >
+                    {entry.channel} · {entry.status.replace(/_/g, " ")}
+                  </span>
+                </div>
+                <p className="mt-1 text-[11px] text-[#607665]">
+                  To: {entry.recipient} · {formatDate(entry.createdAt)}
+                </p>
+                <details className="mt-2 text-[11px] text-[#536b59]">
+                  <summary className="cursor-pointer font-bold">
+                    View logged message
+                  </summary>
+                  <p className="mt-2 whitespace-pre-wrap">{entry.message}</p>
+                  {entry.link && (
+                    <a
+                      className="mt-2 inline-block break-all text-[#285f3c] underline"
+                      href={entry.link}
+                    >
+                      {entry.link}
+                    </a>
+                  )}
+                  {entry.error && (
+                    <p className="mt-2 text-red-800">Error: {entry.error}</p>
+                  )}
+                </details>
+              </>
+            )}
+          </article>
+        ))}
+        {data && !data.items.length && (
+          <p className="rounded-xl bg-[#f4f8f3] p-6 text-[12px]">
+            No records yet.
+          </p>
+        )}
+        {!data && <p className="text-[12px]">Loading records…</p>}
+      </div>
+    </div>
+  );
 }

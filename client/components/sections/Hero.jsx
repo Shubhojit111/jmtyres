@@ -1,29 +1,33 @@
 /* Hero.jsx — keep the approved cover geometry while leading with local, useful actions. */
-import { CircleGauge, Star, Wrench } from 'lucide-react';
-import Assets from '@/assets/Assets';
-import PillLink from '@/components/ui/PillLink';
-import { business } from '@/lib/data/business';
+import { CircleGauge, Star, Wrench } from "lucide-react";
+import Assets from "@/assets/Assets";
+import PillLink from "@/components/ui/PillLink";
+import { business } from "@/lib/data/business";
 
 const heroBenefits = [
-  { label: 'Tyres for every drive', Icon: CircleGauge },
-  { label: 'Practical wheel care', Icon: Wrench },
+  { label: "Tyres for every drive", Icon: CircleGauge },
+  { label: "Practical wheel care", Icon: Wrench },
 ];
 
 const defaultContent = {
-  heroIntroLine1: 'Confidence in',
-  heroIntroLine2: 'every kilometre.',
-  heroLocation: 'YOUR LOCAL TYRE EXPERTS · MULUND WEST',
-  heroLine1: 'Tyres & wheel care.',
-  heroLine2: 'Mulund West.',
-  heroDescription: 'Need new tyres or wheel care? Tell us your vehicle or tyre size. We can check options and fitted pricing before you visit.',
-  heroImage: 'HeroMountainDrive',
+  heroIntroLine1: "Confidence in",
+  heroIntroLine2: "every kilometre.",
+  heroLocation: "YOUR LOCAL TYRE EXPERTS · MULUND WEST",
+  heroLine1: "Tyres & wheel care.",
+  heroLine2: "Mulund West.",
+  heroDescription:
+    "Need new tyres or wheel care? Tell us your vehicle or tyre size. We can check options and fitted pricing before you visit.",
+  heroImage: "HeroMountainDrive",
 };
 
 export default function Hero({ content }) {
   const c = { ...defaultContent, ...(content || {}) };
   const heroImageSrc =
     Assets[c.heroImage] ||
-    (c.heroImage && (c.heroImage.startsWith('/') || c.heroImage.startsWith('http')) ? c.heroImage : null) ||
+    (c.heroImage &&
+    (c.heroImage.startsWith("/") || c.heroImage.startsWith("http"))
+      ? c.heroImage
+      : null) ||
     Assets.HeroMountainDrive;
 
   return (
@@ -66,10 +70,17 @@ export default function Hero({ content }) {
           {c.heroDescription}
         </p>
         <div className="hero-actions flex items-center flex-wrap gap-2.5 [&_.pill-button]:min-h-[43px] max-[720px]:gap-1.5 max-[720px]:[&_.pill-button]:min-h-[40px] max-[720px]:[&_.pill-button]:px-3 max-[720px]:[&_.pill-button]:gap-1.5 max-[720px]:[&_.pill-button]:text-[10.5px] max-[720px]:[&_.pill-button_svg]:w-3 max-[720px]:[&_.pill-button_svg]:h-3 max-[375px]:items-stretch max-[375px]:[&_.hero-cta]:flex-[1_1_100%] max-[375px]:[&_.hero-cta-call]:flex-[0_1_auto]">
-          <PillLink className="hero-cta border border-white/90 bg-[#030e0b]/75" href="#find-tyres">
+          <PillLink
+            className="hero-cta border border-white/90 bg-[#030e0b]/75"
+            href="#find-tyres"
+          >
             Check tyres &amp; price
           </PillLink>
-          <PillLink className="hero-cta-call border border-white/90" href={business.phoneHref} light>
+          <PillLink
+            className="hero-cta-call border border-white/90"
+            href={business.phoneHref}
+            light
+          >
             Call now
           </PillLink>
         </div>

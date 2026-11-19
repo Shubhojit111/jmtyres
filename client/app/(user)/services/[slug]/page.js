@@ -1,11 +1,11 @@
 /* Service detail routes provide relevant local answers without live stock or booking claims. */
-import { notFound } from 'next/navigation';
-import ServiceLanding from '@/components/sections/ServiceLanding';
-import { servicePages } from '@/lib/data/servicePages';
+import { notFound } from "next/navigation";
+import ServiceLanding from "@/components/sections/ServiceLanding";
+import { servicePages } from "@/lib/data/servicePages";
 
 // No static-path worker is needed in the database-backed application; the
 // allowlisted service slugs are still enforced by the notFound() check below.
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export function generateMetadata({ params }) {
   const service = servicePages.find((item) => item.slug === params.slug);
@@ -13,7 +13,12 @@ export function generateMetadata({ params }) {
   return {
     title: service.metaTitle,
     description: service.metaDescription,
-    openGraph: { title: service.metaTitle, description: service.metaDescription, locale: 'en_IN', type: 'website' },
+    openGraph: {
+      title: service.metaTitle,
+      description: service.metaDescription,
+      locale: "en_IN",
+      type: "website",
+    },
   };
 }
 

@@ -1,5 +1,20 @@
 /* Simple and truthful next step for local pages. */
-import PillLink from '@/components/ui/PillLink';
-export default function PageEnd({ title, description, href = '/find-tyres', action = 'Find my tyres' }) {
-  return <aside className="page-bottom-cta [display:flex] [align-items:center] [justify-content:space-between] [gap:22px] [min-height:190px] [margin:52px_32px_10px] [padding:30px_38px] [border-radius:20px] [background:#153c28] [color:#fff] [&_h2]:[margin:0] [&_h2]:[font-size:clamp(26px,3vw,42px)] [&_h2]:[line-height:1.1] [&_h2]:[letter-spacing:-.07em] [&_h2]:[font-weight:800] [&_p]:[max-width:560px] [&_p]:[margin:9px_0_0] [&_p]:[color:#d9e9d9] [&_p]:[font-size:13px] [&_p]:[line-height:1.5] [&_.pill-button]:[flex:0_0_auto] [&_.pill-button:hover]:[background:#edf3ec] max-[720px]:[flex-direction:column] max-[720px]:[align-items:flex-start] max-[720px]:[min-height:0] max-[720px]:[margin:30px_16px_7px] max-[720px]:[padding:24px] max-[720px]:[border-radius:16px] max-[720px]:[&_h2]:[font-size:28px] max-[720px]:[&_.pill-button]:[margin-top:6px]"><div><h2>{title}</h2><p>{description}</p></div><PillLink href={href} light>{action}</PillLink></aside>;
+import PillLink from "@/components/ui/PillLink";
+export default function PageEnd({
+  title,
+  description,
+  href = "/find-tyres",
+  action = "Find my tyres",
+}) {
+  return (
+    <aside className="page-bottom-cta [display:flex] [align-items:center] [justify-content:space-between] [gap:22px] [min-height:190px] [margin:52px_32px_10px] [padding:30px_38px] [border-radius:20px] [background:#153c28] [color:#fff] [&_h2]:[margin:0] [&_h2]:[font-size:clamp(26px,3vw,42px)] [&_h2]:[line-height:1.1] [&_h2]:[letter-spacing:-.07em] [&_h2]:[font-weight:800] [&_p]:[max-width:560px] [&_p]:[margin:9px_0_0] [&_p]:[color:#d9e9d9] [&_p]:[font-size:13px] [&_p]:[line-height:1.5] [&_.pill-button]:[flex:0_0_auto] [&_.pill-button:hover]:[background:#edf3ec] max-[720px]:[flex-direction:column] max-[720px]:[align-items:flex-start] max-[720px]:[min-height:0] max-[720px]:[margin:30px_16px_7px] max-[720px]:[padding:24px] max-[720px]:[border-radius:16px] max-[720px]:[&_h2]:[font-size:28px] max-[720px]:[&_.pill-button]:[margin-top:6px]">
+      <div>
+        <h2>{title}</h2>
+        <p>{description}</p>
+      </div>
+      <PillLink href={href} light>
+        {action}
+      </PillLink>
+    </aside>
+  );
 }

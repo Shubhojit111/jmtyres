@@ -1,30 +1,30 @@
 /* Only nonportable selectors and global HTML scroll padding remain; layout is Tailwind utilities in JSX. */
 .products-search input::placeholder {
-    color: #929995
+  color: #929995;
 }
 .products-arrows button:hover:not(:disabled) {
-    background: #dbe6d8
+  background: #dbe6d8;
 }
 @media (max-width: 720px) {
-    html {
-        scroll-padding-top: 76px
-    }
+  html {
+    scroll-padding-top: 76px;
+  }
 }
 .enquiry-fields input::placeholder {
-    color: #849189
+  color: #849189;
 }
 .header-nav a[aria-current="page"]:not(:hover) {
-    background: #e8eee8
+  background: #e8eee8;
 }
 .finder-vehicle-type button:hover:not(.selected) {
-    background: #e2eae0
+  background: #e2eae0;
 }
 .finder-fields input::placeholder {
-    color: #8d9a8f;
-    font-weight: 550
+  color: #8d9a8f;
+  font-weight: 550;
 }
 @media (max-width: 1080px) {
-    .header-nav a[aria-current="page"]:not(:hover) {
-        background: #f2f7f0
-    }
+  .header-nav a[aria-current="page"]:not(:hover) {
+    background: #f2f7f0;
+  }
 }

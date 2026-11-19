@@ -1,42 +1,165 @@
 /* ServiceLanding.jsx — honest local service information with contextual contact routes. */
-import { ArrowLeft, ArrowUpRight, Check, MapPin, MessageCircle, Phone, Star } from 'lucide-react';
-import Assets from '@/assets/Assets';
-import SectionTag from '@/components/ui/SectionTag';
-import { business } from '@/lib/data/business';
-import { formatEnquiry, whatsappLink } from '@/lib/data/enquiry';
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  Check,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Star,
+} from "lucide-react";
+import Assets from "@/assets/Assets";
+import SectionTag from "@/components/ui/SectionTag";
+import { business } from "@/lib/data/business";
+import { formatEnquiry, whatsappLink } from "@/lib/data/enquiry";
 
 export default function ServiceLanding({ service }) {
   const messageHref = whatsappLink(formatEnquiry({ topic: service.topic }));
   return (
     <article className="service-page section-inset [margin-top:21px] [margin-bottom:25px] max-[720px]:[margin-top:15px] [margin-left:16px] [margin-right:16px] max-[720px]:[margin-left:9px] max-[720px]:[margin-right:9px]">
-      <a className="service-back [display:inline-flex] [align-items:center] [gap:7px] [color:#2e6840] [font-size:12px] [font-weight:800] [&:hover]:[text-decoration:underline]" href="/services"><ArrowLeft aria-hidden="true" size={16} />All J.M. services</a>
+      <a
+        className="service-back [display:inline-flex] [align-items:center] [gap:7px] [color:#2e6840] [font-size:12px] [font-weight:800] [&:hover]:[text-decoration:underline]"
+        href="/services"
+      >
+        <ArrowLeft aria-hidden="true" size={16} />
+        All J.M. services
+      </a>
       <header className="service-cover [display:grid] [grid-template-columns:1.05fr_.95fr] [min-height:480px] [overflow:hidden] [margin-top:17px] [border-radius:22px] [background:#edf3ec] [&>img]:[width:100%] [&>img]:[height:100%] [&>img]:[min-height:480px] [&>img]:[object-fit:cover] [&>img]:[object-position:center] max-[970px]:[grid-template-columns:1fr_.75fr] max-[970px]:[min-height:440px] max-[970px]:[&>img]:[min-height:440px] max-[720px]:[grid-template-columns:1fr] max-[720px]:[min-height:0] max-[720px]:[margin-top:12px] max-[720px]:[border-radius:16px] max-[720px]:[&>img]:[height:240px] max-[720px]:[&>img]:[min-height:0]">
         <div className="service-cover-copy [display:flex] [flex-direction:column] [align-items:flex-start] [padding:52px_50px_42px] [&_h1]:[max-width:650px] [&_h1]:[margin:29px_0_0] [&_h1]:[font-size:clamp(43px,4.25vw,65px)] [&_h1]:[line-height:1.03] [&_h1]:[font-weight:800] [&_h1]:[letter-spacing:-.077em] [&>p]:[max-width:505px] [&>p]:[margin:20px_0_0] [&>p]:[color:#3b5443] [&>p]:[font-size:16px] [&>p]:[line-height:1.5] [&>p]:[font-weight:570] [&>small]:[max-width:480px] [&>small]:[margin-top:13px] [&>small]:[color:#657369] [&>small]:[font-size:11px] [&>small]:[line-height:1.45] [&>small]:[font-weight:650] max-[970px]:[padding:33px_30px] max-[970px]:[&_h1]:[font-size:40px] max-[970px]:[&>p]:[font-size:13px] max-[720px]:[padding:27px_23px] max-[720px]:[&_h1]:[margin-top:17px] max-[720px]:[&_h1]:[font-size:36px] max-[720px]:[&>p]:[margin-top:13px] max-[720px]:[&>p]:[font-size:13px]">
           <SectionTag>{service.eyebrow}</SectionTag>
           <h1>{service.title}</h1>
           <p>{service.intro}</p>
           <div className="service-actions [display:flex] [flex-wrap:wrap] [gap:9px] [margin-top:auto] [padding-top:27px] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[justify-content:center] [&_a]:[gap:8px] [&_a]:[min-height:45px] [&_a]:[padding:0_15px] [&_a]:[border-radius:99px] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[white-space:nowrap] max-[720px]:[margin-top:0] max-[720px]:[padding-top:20px] max-[720px]:[&_a]:[min-height:41px] max-[720px]:[&_a]:[padding:0_11px] max-[720px]:[&_a]:[font-size:10.5px]">
-            <a className="service-primary [background:#173e2a] [color:#fff] [&:hover]:[background:#2c6645]" href={messageHref} rel="noopener noreferrer" target="_blank"><MessageCircle aria-hidden="true" size={18} />Ask on WhatsApp <ArrowUpRight aria-hidden="true" size={16} /></a>
-            <a className="service-secondary [border:1px_solid_#a9b7ab] [background:#fff] [color:#234631] [&:hover]:[background:#f7fbf6]" href={business.phoneHref}><Phone aria-hidden="true" size={18} />Call the shop</a>
+            <a
+              className="service-primary [background:#173e2a] [color:#fff] [&:hover]:[background:#2c6645]"
+              href={messageHref}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <MessageCircle aria-hidden="true" size={18} />
+              Ask on WhatsApp <ArrowUpRight aria-hidden="true" size={16} />
+            </a>
+            <a
+              className="service-secondary [border:1px_solid_#a9b7ab] [background:#fff] [color:#234631] [&:hover]:[background:#f7fbf6]"
+              href={business.phoneHref}
+            >
+              <Phone aria-hidden="true" size={18} />
+              Call the shop
+            </a>
           </div>
-          <small>WhatsApp opens a draft; tap Send there. No price, stock or visit is confirmed by this page.</small>
+          <small>
+            WhatsApp opens a draft; tap Send there. No price, stock or visit is
+            confirmed by this page.
+          </small>
         </div>
-        <img alt={service.imageAlt} height="600" src={Assets[service.image]} width="800" />
+        <img
+          alt={service.imageAlt}
+          height="600"
+          src={Assets[service.image]}
+          width="800"
+        />
       </header>
-      <section aria-labelledby="service-steps-title" className="service-content [display:grid] [grid-template-columns:1.5fr_.65fr] [gap:27px] [margin-top:44px] max-[970px]:[grid-template-columns:1fr] max-[720px]:[gap:18px] max-[720px]:[margin-top:30px]">
+      <section
+        aria-labelledby="service-steps-title"
+        className="service-content [display:grid] [grid-template-columns:1.5fr_.65fr] [gap:27px] [margin-top:44px] max-[970px]:[grid-template-columns:1fr] max-[720px]:[gap:18px] max-[720px]:[margin-top:30px]"
+      >
         <div className="service-steps [min-width:0] [padding:20px_5px_0] [&>h2]:[margin:18px_0_24px] [&>h2]:[font-size:37px] [&>h2]:[line-height:1.04] [&>h2]:[letter-spacing:-.072em] [&>h2]:[font-weight:800] max-[970px]:[padding:0] max-[720px]:[&>h2]:[font-size:31px]">
           <SectionTag>How to get started</SectionTag>
-          <h2 id="service-steps-title">A clearer next step,<br />from the first message.</h2>
-          <div className="service-step-grid [display:grid] [grid-template-columns:repeat(3,minmax(0,1fr))] [gap:13px] max-[720px]:[grid-template-columns:1fr] max-[720px]:[gap:8px]">{service.process.map((step, index) => <div className="service-step [min-height:175px] [padding:17px_16px] [border:1px_solid_#e7ede5] [border-radius:16px] [background:#f9fbf8] [&>span]:[color:#32724a] [&>span]:[font-size:12px] [&>span]:[font-weight:800] [&_h3]:[margin:15px_0_8px] [&_h3]:[font-size:17px] [&_h3]:[line-height:1.15] [&_h3]:[letter-spacing:-.045em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#536459] [&_p]:[font-size:12px] [&_p]:[line-height:1.48] [&_p]:[font-weight:550] max-[720px]:[min-height:0] max-[720px]:[padding:17px] max-[720px]:[&_h3]:[margin-top:8px]" key={step.title}><span>0{index + 1}</span><h3>{step.title}</h3><p>{step.copy}</p></div>)}</div>
+          <h2 id="service-steps-title">
+            A clearer next step,
+            <br />
+            from the first message.
+          </h2>
+          <div className="service-step-grid [display:grid] [grid-template-columns:repeat(3,minmax(0,1fr))] [gap:13px] max-[720px]:[grid-template-columns:1fr] max-[720px]:[gap:8px]">
+            {service.process.map((step, index) => (
+              <div
+                className="service-step [min-height:175px] [padding:17px_16px] [border:1px_solid_#e7ede5] [border-radius:16px] [background:#f9fbf8] [&>span]:[color:#32724a] [&>span]:[font-size:12px] [&>span]:[font-weight:800] [&_h3]:[margin:15px_0_8px] [&_h3]:[font-size:17px] [&_h3]:[line-height:1.15] [&_h3]:[letter-spacing:-.045em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#536459] [&_p]:[font-size:12px] [&_p]:[line-height:1.48] [&_p]:[font-weight:550] max-[720px]:[min-height:0] max-[720px]:[padding:17px] max-[720px]:[&_h3]:[margin-top:8px]"
+                key={step.title}
+              >
+                <span>0{index + 1}</span>
+                <h3>{step.title}</h3>
+                <p>{step.copy}</p>
+              </div>
+            ))}
+          </div>
         </div>
-        <aside className="service-checklist [align-self:stretch] [padding:24px] [border-radius:17px] [background:#173c29] [color:white] [&_h2]:[margin:0_0_18px] [&_h2]:[font-size:22px] [&_h2]:[line-height:1.15] [&_h2]:[letter-spacing:-.06em] [&_ul]:[display:flex] [&_ul]:[flex-direction:column] [&_ul]:[gap:14px] [&_ul]:[margin:0] [&_ul]:[padding:0] [&_ul]:[list-style:none] [&_li]:[display:flex] [&_li]:[align-items:flex-start] [&_li]:[gap:9px] [&_li]:[font-size:12px] [&_li]:[line-height:1.42] [&_li]:[font-weight:600] [&_li_svg]:[flex:0_0_auto] [&_li_svg]:[margin-top:1px] [&_li_svg]:[color:#c6e9c6] [&>a]:[display:inline-flex] [&>a]:[align-items:center] [&>a]:[gap:6px] [&>a]:[margin-top:24px] [&>a]:[font-size:12px] [&>a]:[font-weight:800] [&>a]:[text-decoration:underline] [&>a]:[text-underline-offset:3px] max-[970px]:[padding:23px]"><h2>Helpful details to share</h2><ul>{service.questions.map((question) => <li key={question}><Check aria-hidden="true" size={17} />{question}</li>)}</ul><a href="/#enquire">Prepare a detailed enquiry <ArrowUpRight aria-hidden="true" size={16} /></a></aside>
+        <aside className="service-checklist [align-self:stretch] [padding:24px] [border-radius:17px] [background:#173c29] [color:white] [&_h2]:[margin:0_0_18px] [&_h2]:[font-size:22px] [&_h2]:[line-height:1.15] [&_h2]:[letter-spacing:-.06em] [&_ul]:[display:flex] [&_ul]:[flex-direction:column] [&_ul]:[gap:14px] [&_ul]:[margin:0] [&_ul]:[padding:0] [&_ul]:[list-style:none] [&_li]:[display:flex] [&_li]:[align-items:flex-start] [&_li]:[gap:9px] [&_li]:[font-size:12px] [&_li]:[line-height:1.42] [&_li]:[font-weight:600] [&_li_svg]:[flex:0_0_auto] [&_li_svg]:[margin-top:1px] [&_li_svg]:[color:#c6e9c6] [&>a]:[display:inline-flex] [&>a]:[align-items:center] [&>a]:[gap:6px] [&>a]:[margin-top:24px] [&>a]:[font-size:12px] [&>a]:[font-weight:800] [&>a]:[text-decoration:underline] [&>a]:[text-underline-offset:3px] max-[970px]:[padding:23px]">
+          <h2>Helpful details to share</h2>
+          <ul>
+            {service.questions.map((question) => (
+              <li key={question}>
+                <Check aria-hidden="true" size={17} />
+                {question}
+              </li>
+            ))}
+          </ul>
+          <a href="/#enquire">
+            Prepare a detailed enquiry{" "}
+            <ArrowUpRight aria-hidden="true" size={16} />
+          </a>
+        </aside>
       </section>
-      <section aria-labelledby="service-guide-title" className="service-guide [display:grid] [grid-template-columns:.8fr_1.2fr] [gap:22px] [margin-top:37px] [padding:30px_27px] [border-radius:17px] [background:#edf3eb] [&_h2]:[margin:16px_0_10px] [&_h2]:[font-size:30px] [&_h2]:[line-height:1.1] [&_h2]:[font-weight:800] [&_h2]:[letter-spacing:-.067em] [&>div:first-child>p]:[max-width:470px] [&>div:first-child>p]:[color:#48614f] [&>div:first-child>p]:[font-size:13px] [&>div:first-child>p]:[line-height:1.5] [&_ul]:[display:grid] [&_ul]:[grid-template-columns:repeat(2,minmax(0,1fr))] [&_ul]:[gap:10px] [&_ul]:[align-content:center] [&_ul]:[padding:0] [&_ul]:[margin:0] [&_ul]:[list-style:none] [&_li]:[padding:15px] [&_li]:[border:1px_solid_#e4eee1] [&_li]:[border-radius:12px] [&_li]:[background:#fff] [&_li]:[font-size:12px] [&_li]:[line-height:1.5] [&_li_strong]:[display:block] [&_li_strong]:[margin-bottom:4px] [&_li_strong]:[font-size:14px] max-[720px]:[grid-template-columns:1fr] max-[720px]:[padding:22px_17px] max-[390px]:[&_ul]:[grid-template-columns:1fr]">
-        <div><SectionTag>Useful to know</SectionTag><h2 id="service-guide-title">{service.guideTitle}</h2><p>{service.guideIntro}</p></div>
-        <ul>{service.insights.map((item) => <li key={item.title}><strong>{item.title}</strong>{item.copy}</li>)}</ul>
+      <section
+        aria-labelledby="service-guide-title"
+        className="service-guide [display:grid] [grid-template-columns:.8fr_1.2fr] [gap:22px] [margin-top:37px] [padding:30px_27px] [border-radius:17px] [background:#edf3eb] [&_h2]:[margin:16px_0_10px] [&_h2]:[font-size:30px] [&_h2]:[line-height:1.1] [&_h2]:[font-weight:800] [&_h2]:[letter-spacing:-.067em] [&>div:first-child>p]:[max-width:470px] [&>div:first-child>p]:[color:#48614f] [&>div:first-child>p]:[font-size:13px] [&>div:first-child>p]:[line-height:1.5] [&_ul]:[display:grid] [&_ul]:[grid-template-columns:repeat(2,minmax(0,1fr))] [&_ul]:[gap:10px] [&_ul]:[align-content:center] [&_ul]:[padding:0] [&_ul]:[margin:0] [&_ul]:[list-style:none] [&_li]:[padding:15px] [&_li]:[border:1px_solid_#e4eee1] [&_li]:[border-radius:12px] [&_li]:[background:#fff] [&_li]:[font-size:12px] [&_li]:[line-height:1.5] [&_li_strong]:[display:block] [&_li_strong]:[margin-bottom:4px] [&_li_strong]:[font-size:14px] max-[720px]:[grid-template-columns:1fr] max-[720px]:[padding:22px_17px] max-[390px]:[&_ul]:[grid-template-columns:1fr]"
+      >
+        <div>
+          <SectionTag>Useful to know</SectionTag>
+          <h2 id="service-guide-title">{service.guideTitle}</h2>
+          <p>{service.guideIntro}</p>
+        </div>
+        <ul>
+          {service.insights.map((item) => (
+            <li key={item.title}>
+              <strong>{item.title}</strong>
+              {item.copy}
+            </li>
+          ))}
+        </ul>
       </section>
-      <section aria-label="Questions about this service" className="service-faq [&_h2]:[margin:18px_0_24px] [&_h2]:[font-size:37px] [&_h2]:[line-height:1.04] [&_h2]:[letter-spacing:-.072em] [&_h2]:[font-weight:800] [display:grid] [grid-template-columns:.55fr_1fr] [gap:28px] [margin-top:50px] [padding:32px_6px] [border-top:1px_solid_#e1e9e0] [border-bottom:1px_solid_#e1e9e0] [&_details]:[border-bottom:1px_solid_#dfe8de] [&_details:first-child]:[border-top:1px_solid_#dfe8de] [&_summary]:[padding:18px_6px] [&_summary]:[cursor:pointer] [&_summary]:[font-size:15px] [&_summary]:[font-weight:800] [&_details_p]:[max-width:550px] [&_details_p]:[margin:0_6px_18px] [&_details_p]:[color:#52665a] [&_details_p]:[font-size:13px] [&_details_p]:[line-height:1.5] max-[720px]:[&_h2]:[font-size:31px] max-[720px]:[grid-template-columns:1fr] max-[720px]:[gap:8px] max-[720px]:[margin-top:30px] max-[720px]:[padding:26px_4px]"><div><SectionTag>Good to know</SectionTag><h2>Questions before<br />you travel?</h2></div><div>{service.faq.map((item) => <details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div></section>
-      <aside className="service-proof [display:grid] [grid-template-columns:1.4fr_.6fr] [gap:15px] [margin-top:32px] [&_a]:[display:flex] [&_a]:[align-items:center] [&_a]:[gap:14px] [&_a]:[min-height:100px] [&_a]:[padding:10px_15px] [&_a]:[border-radius:15px] [&_a]:[background:#f0f4ee] [&_a:hover]:[background:#e5f0e4] [&_a:first-child_img]:[width:140px] [&_a:first-child_img]:[height:92px] [&_a:first-child_img]:[flex:0_0_auto] [&_a:first-child_img]:[border-radius:10px] [&_a:first-child_img]:[object-fit:cover] [&_a:first-child_span]:[display:flex] [&_a:first-child_span]:[flex-direction:column] [&_a:first-child_span]:[align-items:flex-start] [&_a:first-child_span]:[gap:4px] [&_strong]:[font-size:15px] [&_strong]:[line-height:1.15] [&_small]:[color:#597160] [&_small]:[font-size:11px] [&_small]:[line-height:1.35] [&_a>svg:last-child]:[flex:0_0_auto] [&_a>svg:last-child]:[margin-left:auto] [&_a:last-child]:[font-size:14px] [&_a:last-child]:[font-weight:800] max-[970px]:[grid-template-columns:1fr] max-[720px]:[&_a:first-child_img]:[width:84px] max-[720px]:[&_a:first-child_img]:[height:84px] max-[720px]:[&_a]:[padding:10px] max-[720px]:[&_a]:[gap:10px] max-[720px]:[&_strong]:[font-size:13px]"><a href={business.mapHref} rel="noopener noreferrer" target="_blank"><img alt="The real J.M. Tyre Services shop sign in Mulund West" height="100" src={Assets.Storefront} width="140" /><span><MapPin aria-hidden="true" size={20} /><strong>Visit us on Goshala Road</strong><small>Opposite Aishwarya Tower, Mulund West · current hours on Maps</small></span><ArrowUpRight aria-hidden="true" size={17} /></a><a href={business.mapHref} rel="noopener noreferrer" target="_blank"><Star aria-hidden="true" size={20} />Read our Google reviews <ArrowUpRight aria-hidden="true" size={16} /></a></aside>
+      <section
+        aria-label="Questions about this service"
+        className="service-faq [&_h2]:[margin:18px_0_24px] [&_h2]:[font-size:37px] [&_h2]:[line-height:1.04] [&_h2]:[letter-spacing:-.072em] [&_h2]:[font-weight:800] [display:grid] [grid-template-columns:.55fr_1fr] [gap:28px] [margin-top:50px] [padding:32px_6px] [border-top:1px_solid_#e1e9e0] [border-bottom:1px_solid_#e1e9e0] [&_details]:[border-bottom:1px_solid_#dfe8de] [&_details:first-child]:[border-top:1px_solid_#dfe8de] [&_summary]:[padding:18px_6px] [&_summary]:[cursor:pointer] [&_summary]:[font-size:15px] [&_summary]:[font-weight:800] [&_details_p]:[max-width:550px] [&_details_p]:[margin:0_6px_18px] [&_details_p]:[color:#52665a] [&_details_p]:[font-size:13px] [&_details_p]:[line-height:1.5] max-[720px]:[&_h2]:[font-size:31px] max-[720px]:[grid-template-columns:1fr] max-[720px]:[gap:8px] max-[720px]:[margin-top:30px] max-[720px]:[padding:26px_4px]"
+      >
+        <div>
+          <SectionTag>Good to know</SectionTag>
+          <h2>
+            Questions before
+            <br />
+            you travel?
+          </h2>
+        </div>
+        <div>
+          {service.faq.map((item) => (
+            <details key={item.question}>
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+      <aside className="service-proof [display:grid] [grid-template-columns:1.4fr_.6fr] [gap:15px] [margin-top:32px] [&_a]:[display:flex] [&_a]:[align-items:center] [&_a]:[gap:14px] [&_a]:[min-height:100px] [&_a]:[padding:10px_15px] [&_a]:[border-radius:15px] [&_a]:[background:#f0f4ee] [&_a:hover]:[background:#e5f0e4] [&_a:first-child_img]:[width:140px] [&_a:first-child_img]:[height:92px] [&_a:first-child_img]:[flex:0_0_auto] [&_a:first-child_img]:[border-radius:10px] [&_a:first-child_img]:[object-fit:cover] [&_a:first-child_span]:[display:flex] [&_a:first-child_span]:[flex-direction:column] [&_a:first-child_span]:[align-items:flex-start] [&_a:first-child_span]:[gap:4px] [&_strong]:[font-size:15px] [&_strong]:[line-height:1.15] [&_small]:[color:#597160] [&_small]:[font-size:11px] [&_small]:[line-height:1.35] [&_a>svg:last-child]:[flex:0_0_auto] [&_a>svg:last-child]:[margin-left:auto] [&_a:last-child]:[font-size:14px] [&_a:last-child]:[font-weight:800] max-[970px]:[grid-template-columns:1fr] max-[720px]:[&_a:first-child_img]:[width:84px] max-[720px]:[&_a:first-child_img]:[height:84px] max-[720px]:[&_a]:[padding:10px] max-[720px]:[&_a]:[gap:10px] max-[720px]:[&_strong]:[font-size:13px]">
+        <a href={business.mapHref} rel="noopener noreferrer" target="_blank">
+          <img
+            alt="The real J.M. Tyre Services shop sign in Mulund West"
+            height="100"
+            src={Assets.Storefront}
+            width="140"
+          />
+          <span>
+            <MapPin aria-hidden="true" size={20} />
+            <strong>Visit us on Goshala Road</strong>
+            <small>
+              Opposite Aishwarya Tower, Mulund West · current hours on Maps
+            </small>
+          </span>
+          <ArrowUpRight aria-hidden="true" size={17} />
+        </a>
+        <a href={business.mapHref} rel="noopener noreferrer" target="_blank">
+          <Star aria-hidden="true" size={20} />
+          Read our Google reviews <ArrowUpRight aria-hidden="true" size={16} />
+        </a>
+      </aside>
     </article>
   );
 }

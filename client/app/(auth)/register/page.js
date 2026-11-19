@@ -1,8 +1,9 @@
-import AuthPage from '@/components/account/AuthPage';
+import AuthPage from "@/components/account/AuthPage";
 
 export const metadata = {
-  title: 'Create an account | J.M. Tyres',
-  description: 'Create a J.M. Tyres account to submit and track purchase requests.',
+  title: "Create an account | J.M. Tyres",
+  description:
+    "Create a J.M. Tyres account to submit and track purchase requests.",
 };
 
 export default function RegisterPage() {

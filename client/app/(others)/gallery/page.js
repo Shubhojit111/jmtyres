@@ -1,31 +1,146 @@
-import { Camera, MapPin, ShieldCheck } from 'lucide-react';
-import Assets from '@/assets/Assets';
-import PageIntro from '@/components/ui/PageIntro';
-import PageEnd from '@/components/ui/PageEnd';
-import SectionTag from '@/components/ui/SectionTag';
-import { business } from '@/lib/data/business';
+import { Camera, MapPin, ShieldCheck } from "lucide-react";
+import Assets from "@/assets/Assets";
+import PageIntro from "@/components/ui/PageIntro";
+import PageEnd from "@/components/ui/PageEnd";
+import SectionTag from "@/components/ui/SectionTag";
+import { business } from "@/lib/data/business";
 
 const images = [
-  { image: 'Storefront', alt: 'The photographed J.M. Tyre Services signboard in Mulund West', label: 'The actual J.M. shop sign', note: 'Mulund West · real location photo' },
-  { image: 'PassengerSedan', alt: 'Illustrative passenger car on a road', label: 'Everyday journeys', note: 'Illustrative image' },
-  { image: 'TireTread', alt: 'Illustrative close-up of tyre tread', label: 'Tyre details', note: 'Illustrative image' },
-  { image: 'MotorcycleWheel', alt: 'Illustrative motorcycle tyre', label: 'Two-wheel journeys', note: 'Illustrative image' },
-  { image: 'WorkshopFitting', alt: 'Illustrative tyre technician in a workshop; not J.M. staff', label: 'Fitting questions', note: 'Illustrative workshop image' },
-  { image: 'AboutAdventure', alt: 'Illustrative SUV on an outdoor road', label: 'SUV & 4×4 journeys', note: 'Illustrative image' },
-  { image: 'InspectionWorkshop', alt: 'Illustrative tyre inspection; not J.M. staff', label: 'Wheel care', note: 'Illustrative workshop image' },
-  { image: 'CommercialTruck', alt: 'Illustrative commercial vehicle on a road', label: 'Vehicles that work', note: 'Illustrative image' },
+  {
+    image: "Storefront",
+    alt: "The photographed J.M. Tyre Services signboard in Mulund West",
+    label: "The actual J.M. shop sign",
+    note: "Mulund West · real location photo",
+  },
+  {
+    image: "PassengerSedan",
+    alt: "Illustrative passenger car on a road",
+    label: "Everyday journeys",
+    note: "Illustrative image",
+  },
+  {
+    image: "TireTread",
+    alt: "Illustrative close-up of tyre tread",
+    label: "Tyre details",
+    note: "Illustrative image",
+  },
+  {
+    image: "MotorcycleWheel",
+    alt: "Illustrative motorcycle tyre",
+    label: "Two-wheel journeys",
+    note: "Illustrative image",
+  },
+  {
+    image: "WorkshopFitting",
+    alt: "Illustrative tyre technician in a workshop; not J.M. staff",
+    label: "Fitting questions",
+    note: "Illustrative workshop image",
+  },
+  {
+    image: "AboutAdventure",
+    alt: "Illustrative SUV on an outdoor road",
+    label: "SUV & 4×4 journeys",
+    note: "Illustrative image",
+  },
+  {
+    image: "InspectionWorkshop",
+    alt: "Illustrative tyre inspection; not J.M. staff",
+    label: "Wheel care",
+    note: "Illustrative workshop image",
+  },
+  {
+    image: "CommercialTruck",
+    alt: "Illustrative commercial vehicle on a road",
+    label: "Vehicles that work",
+    note: "Illustrative image",
+  },
 ];
 
 export const metadata = {
-  title: 'Photo Gallery & J.M. Shop Sign | Tyres Mulund West',
-  description: 'View the photographed J.M. Tyre Services signboard in Mulund West plus clearly labelled illustrative tyre and vehicle images. Find the actual shop on Google Maps.',
+  title: "Photo Gallery & J.M. Shop Sign | Tyres Mulund West",
+  description:
+    "View the photographed J.M. Tyre Services signboard in Mulund West plus clearly labelled illustrative tyre and vehicle images. Find the actual shop on Google Maps.",
 };
 
 export default function GalleryPage() {
-  return <div className="content-page [min-width:0]">
-    <PageIntro eyebrow="Shop & vehicle gallery" title="Made for the miles that matter." description="One real photo of the J.M. shop sign, plus editorial visuals showing the types of vehicles and tyre-care conversations you can have with us. These visuals do not show live stock or our staff." image="AboutAdventure" imageAlt="Illustrative SUV in an outdoor landscape" action="Find the real shop" actionHref={business.mapHref} />
-    <section className="page-block [margin:56px_32px_0] max-[720px]:[margin:34px_16px_0]"><div className="page-block-intro [display:flex] [justify-content:space-between] [align-items:flex-end] [gap:30px] [margin-bottom:23px] [&_h2]:[max-width:750px] [&_h2]:[margin:17px_0_0] [&_h2]:[font-size:clamp(29px,3.3vw,45px)] [&_h2]:[line-height:1.08] [&_h2]:[letter-spacing:-.075em] [&_h2]:[font-weight:800] [&_p]:[max-width:380px] [&_p]:[margin:0] [&_p]:[color:#536456] [&_p]:[font-size:13px] [&_p]:[line-height:1.55] max-[720px]:[align-items:flex-start] max-[720px]:[flex-direction:column] max-[720px]:[gap:9px] max-[720px]:[&_h2]:[margin-top:12px] max-[720px]:[&_h2]:[font-size:29px] max-[720px]:[&_p]:[font-size:12px]"><div><SectionTag>Gallery</SectionTag><h2>See the shop. Picture the journey.</h2></div><p>The original signboard photo identifies the location. Every other image below is illustrative until actual, approved shop photography is supplied.</p></div><div className="page-gallery [display:grid] [grid-template-columns:repeat(4,minmax(0,1fr))] [gap:14px] [&_figure]:[position:relative] [&_figure]:[overflow:hidden] [&_figure]:[min-width:0] [&_figure]:[height:280px] [&_figure]:[margin:0] [&_figure]:[border-radius:17px] [&_figure]:[background:#143523] [&_figure:nth-child(1)]:[grid-column:span_2] [&_figure:nth-child(6)]:[grid-column:span_2] [&_img]:[width:100%] [&_img]:[height:100%] [&_img]:[object-fit:cover] [&_img]:[transition:transform_.5s_ease] [&_figure:hover_img]:[transform:scale(1.05)] [&_figcaption]:[position:absolute] [&_figcaption]:[inset:auto_0_0] [&_figcaption]:[padding:27px_17px_15px] [&_figcaption]:[background:linear-gradient(0deg,rgba(5,18,10,.86),transparent)] [&_figcaption]:[color:#fff] [&_figcaption]:[font-size:13px] [&_figcaption]:[font-weight:800] [&_figcaption_small]:[display:block] [&_figcaption_small]:[margin-top:4px] [&_figcaption_small]:[font-size:10px] [&_figcaption_small]:[font-weight:600] max-[970px]:[grid-template-columns:repeat(2,minmax(0,1fr))] max-[970px]:[&_figure:nth-child(1)]:[grid-column:auto] max-[970px]:[&_figure:nth-child(6)]:[grid-column:auto] max-[720px]:[gap:9px] max-[720px]:[&_figure]:[height:195px] max-[720px]:[&_figure]:[border-radius:12px] max-[720px]:[&_figcaption]:[font-size:11px] max-[390px]:[grid-template-columns:1fr] max-[390px]:[&_figure]:[height:210px]">{images.map((item) => <figure key={item.image}><img alt={item.alt} height="560" loading="lazy" src={Assets[item.image]} width="640" /><figcaption>{item.label}<small>{item.note}</small></figcaption></figure>)}</div></section>
-    <section aria-label="Visit information" className="page-block page-three-grid [margin:56px_32px_0] max-[720px]:[margin:34px_16px_0] [display:grid] [grid-template-columns:repeat(3,minmax(0,1fr))] [gap:15px] max-[970px]:[grid-template-columns:repeat(2,minmax(0,1fr))] max-[720px]:[grid-template-columns:1fr]"><div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]"><MapPin aria-hidden="true" size={27} /><h3>Find the exact location</h3><p>Goshala Road, opposite Aishwarya Tower, Ramgad Nagar, Mulund West.</p><a href={business.mapHref} rel="noopener noreferrer" target="_blank">Open directions</a></div><div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]"><Camera aria-hidden="true" size={27} /><h3>Real photo updates</h3><p>Future customer vehicles and service photography should be added only with permission and accurate captions.</p></div><div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]"><ShieldCheck aria-hidden="true" size={27} /><h3>No stock claims</h3><p>Products pictured on this page are not an inventory feed. Ask the shop what is available for your size.</p></div></section>
-    <PageEnd title="Prefer to see the shop yourself?" description="Check Maps for the current listing, directions and hours, or call before you travel." href="/contact" action="Contact the shop" />
-  </div>;
+  return (
+    <div className="content-page [min-width:0]">
+      <PageIntro
+        eyebrow="Shop & vehicle gallery"
+        title="Made for the miles that matter."
+        description="One real photo of the J.M. shop sign, plus editorial visuals showing the types of vehicles and tyre-care conversations you can have with us. These visuals do not show live stock or our staff."
+        image="AboutAdventure"
+        imageAlt="Illustrative SUV in an outdoor landscape"
+        action="Find the real shop"
+        actionHref={business.mapHref}
+      />
+      <section className="page-block [margin:56px_32px_0] max-[720px]:[margin:34px_16px_0]">
+        <div className="page-block-intro [display:flex] [justify-content:space-between] [align-items:flex-end] [gap:30px] [margin-bottom:23px] [&_h2]:[max-width:750px] [&_h2]:[margin:17px_0_0] [&_h2]:[font-size:clamp(29px,3.3vw,45px)] [&_h2]:[line-height:1.08] [&_h2]:[letter-spacing:-.075em] [&_h2]:[font-weight:800] [&_p]:[max-width:380px] [&_p]:[margin:0] [&_p]:[color:#536456] [&_p]:[font-size:13px] [&_p]:[line-height:1.55] max-[720px]:[align-items:flex-start] max-[720px]:[flex-direction:column] max-[720px]:[gap:9px] max-[720px]:[&_h2]:[margin-top:12px] max-[720px]:[&_h2]:[font-size:29px] max-[720px]:[&_p]:[font-size:12px]">
+          <div>
+            <SectionTag>Gallery</SectionTag>
+            <h2>See the shop. Picture the journey.</h2>
+          </div>
+          <p>
+            The original signboard photo identifies the location. Every other
+            image below is illustrative until actual, approved shop photography
+            is supplied.
+          </p>
+        </div>
+        <div className="page-gallery [display:grid] [grid-template-columns:repeat(4,minmax(0,1fr))] [gap:14px] [&_figure]:[position:relative] [&_figure]:[overflow:hidden] [&_figure]:[min-width:0] [&_figure]:[height:280px] [&_figure]:[margin:0] [&_figure]:[border-radius:17px] [&_figure]:[background:#143523] [&_figure:nth-child(1)]:[grid-column:span_2] [&_figure:nth-child(6)]:[grid-column:span_2] [&_img]:[width:100%] [&_img]:[height:100%] [&_img]:[object-fit:cover] [&_img]:[transition:transform_.5s_ease] [&_figure:hover_img]:[transform:scale(1.05)] [&_figcaption]:[position:absolute] [&_figcaption]:[inset:auto_0_0] [&_figcaption]:[padding:27px_17px_15px] [&_figcaption]:[background:linear-gradient(0deg,rgba(5,18,10,.86),transparent)] [&_figcaption]:[color:#fff] [&_figcaption]:[font-size:13px] [&_figcaption]:[font-weight:800] [&_figcaption_small]:[display:block] [&_figcaption_small]:[margin-top:4px] [&_figcaption_small]:[font-size:10px] [&_figcaption_small]:[font-weight:600] max-[970px]:[grid-template-columns:repeat(2,minmax(0,1fr))] max-[970px]:[&_figure:nth-child(1)]:[grid-column:auto] max-[970px]:[&_figure:nth-child(6)]:[grid-column:auto] max-[720px]:[gap:9px] max-[720px]:[&_figure]:[height:195px] max-[720px]:[&_figure]:[border-radius:12px] max-[720px]:[&_figcaption]:[font-size:11px] max-[390px]:[grid-template-columns:1fr] max-[390px]:[&_figure]:[height:210px]">
+          {images.map((item) => (
+            <figure key={item.image}>
+              <img
+                alt={item.alt}
+                height="560"
+                loading="lazy"
+                src={Assets[item.image]}
+                width="640"
+              />
+              <figcaption>
+                {item.label}
+                <small>{item.note}</small>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+      <section
+        aria-label="Visit information"
+        className="page-block page-three-grid [margin:56px_32px_0] max-[720px]:[margin:34px_16px_0] [display:grid] [grid-template-columns:repeat(3,minmax(0,1fr))] [gap:15px] max-[970px]:[grid-template-columns:repeat(2,minmax(0,1fr))] max-[720px]:[grid-template-columns:1fr]"
+      >
+        <div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]">
+          <MapPin aria-hidden="true" size={27} />
+          <h3>Find the exact location</h3>
+          <p>
+            Goshala Road, opposite Aishwarya Tower, Ramgad Nagar, Mulund West.
+          </p>
+          <a href={business.mapHref} rel="noopener noreferrer" target="_blank">
+            Open directions
+          </a>
+        </div>
+        <div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]">
+          <Camera aria-hidden="true" size={27} />
+          <h3>Real photo updates</h3>
+          <p>
+            Future customer vehicles and service photography should be added
+            only with permission and accurate captions.
+          </p>
+        </div>
+        <div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]">
+          <ShieldCheck aria-hidden="true" size={27} />
+          <h3>No stock claims</h3>
+          <p>
+            Products pictured on this page are not an inventory feed. Ask the
+            shop what is available for your size.
+          </p>
+        </div>
+      </section>
+      <PageEnd
+        title="Prefer to see the shop yourself?"
+        description="Check Maps for the current listing, directions and hours, or call before you travel."
+        href="/contact"
+        action="Contact the shop"
+      />
+    </div>
+  );
 }

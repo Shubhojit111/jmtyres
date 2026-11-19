@@ -1,13 +1,114 @@
-import { ArrowUpRight, BadgeCheck, CircleHelp, ScanSearch } from 'lucide-react';
-import PageIntro from '@/components/ui/PageIntro';
-import PageEnd from '@/components/ui/PageEnd';
-import SectionTag from '@/components/ui/SectionTag';
-import { getBrands } from '@/lib/backend';
-export const dynamic='force-dynamic';
-export const metadata={title:'Tyre Brands | J.M. Tyre Services',description:'Explore brands from current tyre listings and search by size or vehicle. Demo products are clearly marked as examples.'};
-export default async function BrandsPage(){const available=await getBrands();return <div className="content-page [min-width:0]"><PageIntro eyebrow="Brands & tyre choices" title="Good options start with the right fit." description="Know the brand you want—or want help comparing choices? Start with your vehicle and size, and ask our team what is currently available." image="TireStacks" imageAlt="Illustrative tyre-shop photograph, not J.M. stock" action="Start a brand enquiry" actionHref="/find-tyres" />
-  <section className="page-block [margin:56px_32px_0] max-[720px]:[margin:34px_16px_0]"><div className="page-block-intro [display:flex] [justify-content:space-between] [align-items:flex-end] [gap:30px] [margin-bottom:23px] [&_h2]:[max-width:750px] [&_h2]:[margin:17px_0_0] [&_h2]:[font-size:clamp(29px,3.3vw,45px)] [&_h2]:[line-height:1.08] [&_h2]:[letter-spacing:-.075em] [&_h2]:[font-weight:800] [&_p]:[max-width:380px] [&_p]:[margin:0] [&_p]:[color:#536456] [&_p]:[font-size:13px] [&_p]:[line-height:1.55] max-[720px]:[align-items:flex-start] max-[720px]:[flex-direction:column] max-[720px]:[gap:9px] max-[720px]:[&_h2]:[margin-top:12px] max-[720px]:[&_h2]:[font-size:29px] max-[720px]:[&_p]:[font-size:12px]"><div><SectionTag>Brands in the catalogue</SectionTag><h2>Preference is a starting point.</h2></div><p>Brand names below come from active database products. DEMO items are only examples and do not confirm real shop inventory or brand authorisation.</p></div><div className="brand-grid [display:grid] [grid-template-columns:repeat(5,minmax(0,1fr))] [gap:13px] max-[1200px]:[grid-template-columns:repeat(3,minmax(0,1fr))] max-[720px]:[grid-template-columns:repeat(2,minmax(0,1fr))]">{available.map(item=><a aria-label={`Browse ${item.name} listings`} className="brand-card [display:flex] [flex-direction:column] [align-items:flex-start] [min-height:190px] [padding:19px] [border:1px_solid_#e4ebe2] [border-radius:16px] [background:#f8faf7] [transition:transform_.2s_ease,_border-color_.2s_ease] [&:hover]:[transform:translateY(-3px)] [&:hover]:[border-color:#99b39c] [&>span]:[display:flex] [&>span]:[align-items:center] [&>span]:[justify-content:center] [&>span]:[width:47px] [&>span]:[height:47px] [&>span]:[border-radius:13px] [&>span]:[background:#e6efe4] [&>span]:[color:#2c623e] [&>span]:[font-size:20px] [&>span]:[font-weight:800] [&_strong]:[margin-top:25px] [&_strong]:[font-size:19px] [&_strong]:[letter-spacing:-.055em] [&_small]:[margin-top:6px] [&_small]:[color:#5c6b5d] [&_small]:[font-size:11px] [&_small]:[line-height:1.35] [&_svg]:[margin-top:auto] [&_svg]:[align-self:flex-end] max-[720px]:[min-height:155px] max-[720px]:[padding:15px] max-[720px]:[&_strong]:[margin-top:19px] max-[720px]:[&_strong]:[font-size:16px] max-[390px]:[padding:12px] motion-reduce:[&:hover]:[transform:none]" href={`/catalogue?brand=${encodeURIComponent(item.name)}`} key={item.name}><span aria-hidden="true">{item.name.slice(0,1)}</span><strong>{item.name}</strong><small>{item.count} {item.count===1?'listing':'listings'} · check size</small><ArrowUpRight aria-hidden="true" size={16}/></a>)}</div>{!available.length&&<p className="rounded-xl bg-[#f3f8f1] p-6 text-[12px]">No brands are listed until the owner adds products.</p>}</section>
-  <section aria-label="Choosing tyre options" className="page-block page-three-grid [margin:56px_32px_0] max-[720px]:[margin:34px_16px_0] [display:grid] [grid-template-columns:repeat(3,minmax(0,1fr))] [gap:15px] max-[970px]:[grid-template-columns:repeat(2,minmax(0,1fr))] max-[720px]:[grid-template-columns:1fr]"><div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]"><ScanSearch aria-hidden="true" size={27}/><h3>Fitment first</h3><p>Confirm the vehicle-specific tyre specification before weighing up brands or tread types.</p></div><div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]"><BadgeCheck aria-hidden="true" size={27}/><h3>Compare total cost</h3><p>Ask what fitting, balancing, valves, tax and applicable warranty information are included.</p></div><div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]"><CircleHelp aria-hidden="true" size={27}/><h3>Another brand in mind?</h3><p>Use the finder or send an enquiry if a brand is not currently in the catalogue.</p></div></section>
-  <section className="page-block rounded-[18px] bg-[#eef5eb] p-7 [margin:56px_32px_0] max-[720px]:[margin:34px_16px_0]"><SectionTag>From listing to decision</SectionTag><h2 className="mt-4 text-[30px] font-extrabold tracking-[-.07em]">Compare the full tyre, not only the badge.</h2><p className="mt-2 max-w-[700px] text-[13px] leading-relaxed text-[#526d58]">Review size, load and speed requirements, tyre type and listed stock. Vehicle compatibility is displayed only when staff have entered a verified mapping. Ask the team to confirm suitability before requesting to buy.</p><a className="mt-5 inline-flex items-center gap-2 text-[12px] font-extrabold text-[#2a6240] underline" href="/catalogue">Open catalogue <ArrowUpRight size={15} aria-hidden="true"/></a></section>
-  <PageEnd title="Tell us your vehicle and size." description="The team can check brand options, suitability and the fitted total, then you can decide what works for you." /></div>;
+import { ArrowUpRight, BadgeCheck, CircleHelp, ScanSearch } from "lucide-react";
+import PageIntro from "@/components/ui/PageIntro";
+import PageEnd from "@/components/ui/PageEnd";
+import SectionTag from "@/components/ui/SectionTag";
+import { getBrands } from "@/lib/backend";
+export const dynamic = "force-dynamic";
+export const metadata = {
+  title: "Tyre Brands | J.M. Tyre Services",
+  description:
+    "Explore brands from current tyre listings and search by size or vehicle. Demo products are clearly marked as examples.",
+};
+export default async function BrandsPage() {
+  const available = await getBrands();
+  return (
+    <div className="content-page [min-width:0]">
+      <PageIntro
+        eyebrow="Brands & tyre choices"
+        title="Good options start with the right fit."
+        description="Know the brand you want—or want help comparing choices? Start with your vehicle and size, and ask our team what is currently available."
+        image="TireStacks"
+        imageAlt="Illustrative tyre-shop photograph, not J.M. stock"
+        action="Start a brand enquiry"
+        actionHref="/find-tyres"
+      />
+      <section className="page-block [margin:56px_32px_0] max-[720px]:[margin:34px_16px_0]">
+        <div className="page-block-intro [display:flex] [justify-content:space-between] [align-items:flex-end] [gap:30px] [margin-bottom:23px] [&_h2]:[max-width:750px] [&_h2]:[margin:17px_0_0] [&_h2]:[font-size:clamp(29px,3.3vw,45px)] [&_h2]:[line-height:1.08] [&_h2]:[letter-spacing:-.075em] [&_h2]:[font-weight:800] [&_p]:[max-width:380px] [&_p]:[margin:0] [&_p]:[color:#536456] [&_p]:[font-size:13px] [&_p]:[line-height:1.55] max-[720px]:[align-items:flex-start] max-[720px]:[flex-direction:column] max-[720px]:[gap:9px] max-[720px]:[&_h2]:[margin-top:12px] max-[720px]:[&_h2]:[font-size:29px] max-[720px]:[&_p]:[font-size:12px]">
+          <div>
+            <SectionTag>Brands in the catalogue</SectionTag>
+            <h2>Preference is a starting point.</h2>
+          </div>
+          <p>
+            Brand names below come from active database products. DEMO items are
+            only examples and do not confirm real shop inventory or brand
+            authorisation.
+          </p>
+        </div>
+        <div className="brand-grid [display:grid] [grid-template-columns:repeat(5,minmax(0,1fr))] [gap:13px] max-[1200px]:[grid-template-columns:repeat(3,minmax(0,1fr))] max-[720px]:[grid-template-columns:repeat(2,minmax(0,1fr))]">
+          {available.map((item) => (
+            <a
+              aria-label={`Browse ${item.name} listings`}
+              className="brand-card [display:flex] [flex-direction:column] [align-items:flex-start] [min-height:190px] [padding:19px] [border:1px_solid_#e4ebe2] [border-radius:16px] [background:#f8faf7] [transition:transform_.2s_ease,_border-color_.2s_ease] [&:hover]:[transform:translateY(-3px)] [&:hover]:[border-color:#99b39c] [&>span]:[display:flex] [&>span]:[align-items:center] [&>span]:[justify-content:center] [&>span]:[width:47px] [&>span]:[height:47px] [&>span]:[border-radius:13px] [&>span]:[background:#e6efe4] [&>span]:[color:#2c623e] [&>span]:[font-size:20px] [&>span]:[font-weight:800] [&_strong]:[margin-top:25px] [&_strong]:[font-size:19px] [&_strong]:[letter-spacing:-.055em] [&_small]:[margin-top:6px] [&_small]:[color:#5c6b5d] [&_small]:[font-size:11px] [&_small]:[line-height:1.35] [&_svg]:[margin-top:auto] [&_svg]:[align-self:flex-end] max-[720px]:[min-height:155px] max-[720px]:[padding:15px] max-[720px]:[&_strong]:[margin-top:19px] max-[720px]:[&_strong]:[font-size:16px] max-[390px]:[padding:12px] motion-reduce:[&:hover]:[transform:none]"
+              href={`/catalogue?brand=${encodeURIComponent(item.name)}`}
+              key={item.name}
+            >
+              <span aria-hidden="true">{item.name.slice(0, 1)}</span>
+              <strong>{item.name}</strong>
+              <small>
+                {item.count} {item.count === 1 ? "listing" : "listings"} · check
+                size
+              </small>
+              <ArrowUpRight aria-hidden="true" size={16} />
+            </a>
+          ))}
+        </div>
+        {!available.length && (
+          <p className="rounded-xl bg-[#f3f8f1] p-6 text-[12px]">
+            No brands are listed until the owner adds products.
+          </p>
+        )}
+      </section>
+      <section
+        aria-label="Choosing tyre options"
+        className="page-block page-three-grid [margin:56px_32px_0] max-[720px]:[margin:34px_16px_0] [display:grid] [grid-template-columns:repeat(3,minmax(0,1fr))] [gap:15px] max-[970px]:[grid-template-columns:repeat(2,minmax(0,1fr))] max-[720px]:[grid-template-columns:1fr]"
+      >
+        <div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]">
+          <ScanSearch aria-hidden="true" size={27} />
+          <h3>Fitment first</h3>
+          <p>
+            Confirm the vehicle-specific tyre specification before weighing up
+            brands or tread types.
+          </p>
+        </div>
+        <div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]">
+          <BadgeCheck aria-hidden="true" size={27} />
+          <h3>Compare total cost</h3>
+          <p>
+            Ask what fitting, balancing, valves, tax and applicable warranty
+            information are included.
+          </p>
+        </div>
+        <div className="page-card [min-width:0] [padding:25px] [border:1px_solid_#e7ede5] [border-radius:17px] [background:#f8faf7] [&_svg]:[color:#2a6942] [&_h3]:[margin:17px_0_8px] [&_h3]:[font-size:20px] [&_h3]:[line-height:1.12] [&_h3]:[letter-spacing:-.06em] [&_h3]:[font-weight:800] [&_p]:[margin:0] [&_p]:[color:#516354] [&_p]:[font-size:13px] [&_p]:[line-height:1.53] [&_a]:[display:inline-flex] [&_a]:[align-items:center] [&_a]:[gap:5px] [&_a]:[margin-top:18px] [&_a]:[color:#245a37] [&_a]:[font-size:12px] [&_a]:[font-weight:800] [&_a]:[text-decoration:underline] [&_a]:[text-underline-offset:4px] max-[720px]:[padding:20px]">
+          <CircleHelp aria-hidden="true" size={27} />
+          <h3>Another brand in mind?</h3>
+          <p>
+            Use the finder or send an enquiry if a brand is not currently in the
+            catalogue.
+          </p>
+        </div>
+      </section>
+      <section className="page-block rounded-[18px] bg-[#eef5eb] p-7 [margin:56px_32px_0] max-[720px]:[margin:34px_16px_0]">
+        <SectionTag>From listing to decision</SectionTag>
+        <h2 className="mt-4 text-[30px] font-extrabold tracking-[-.07em]">
+          Compare the full tyre, not only the badge.
+        </h2>
+        <p className="mt-2 max-w-[700px] text-[13px] leading-relaxed text-[#526d58]">
+          Review size, load and speed requirements, tyre type and listed stock.
+          Vehicle compatibility is displayed only when staff have entered a
+          verified mapping. Ask the team to confirm suitability before
+          requesting to buy.
+        </p>
+        <a
+          className="mt-5 inline-flex items-center gap-2 text-[12px] font-extrabold text-[#2a6240] underline"
+          href="/catalogue"
+        >
+          Open catalogue <ArrowUpRight size={15} aria-hidden="true" />
+        </a>
+      </section>
+      <PageEnd
+        title="Tell us your vehicle and size."
+        description="The team can check brand options, suitability and the fitted total, then you can decide what works for you."
+      />
+    </div>
+  );
 }

@@ -1,28 +1,360 @@
-'use client';
-import { useEffect,useState } from 'react';
-import { ArrowLeft, ArrowUpRight, CreditCard, ShieldCheck } from 'lucide-react';
-import { formatDate,formatINR,statusLabel } from '@/lib/data/money';
+"use client";
+import { useEffect, useState } from "react";
+import { ArrowLeft, ArrowUpRight, CreditCard, ShieldCheck } from "lucide-react";
+import { formatDate, formatINR, statusLabel } from "@/lib/data/money";
 
-export default function RequestDetails({id,admin=false}) {
-  const [request,setRequest]=useState(null);const [attempt,setAttempt]=useState(null);const [error,setError]=useState('');const [notice,setNotice]=useState('');const [busy,setBusy]=useState(false);
-  async function refresh(){const r=await fetch(`/api/requests/${encodeURIComponent(id)}`,{cache:'no-store'});const d=await r.json();if(!r.ok)throw Error(d.error);setRequest(d.request);const pending=d.request.payments.find(p=>p.status==='pending');if(!pending)setAttempt(null);return d.request;}
-  useEffect(()=>{refresh().catch(e=>setError(e.message));},[id]);
-  async function run(endpoint,payload){setError('');setNotice('');setBusy(true);try{const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json();if(!r.ok)throw Error(d.error || 'Action failed.');setNotice(d.notice || 'Updated.');await refresh();return d;}catch(e){setError(e.message);return null;}finally{setBusy(false);}}
-  async function begin(){const d=await run(`/api/requests/${encodeURIComponent(id)}/payment`,{});if(d?.payment){setAttempt(d.payment);setNotice(d.payment.mode==='demo'?'DEMO ONLY — no real payment will be taken. Choose a simulation step below.':'Opening secure Razorpay checkout…');if(d.payment.mode==='live')openRazorpay(d.payment);}}
-  async function openRazorpay(payment){
-    try {if(!window.Razorpay){await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://checkout.razorpay.com/v1/checkout.js';script.onload=resolve;script.onerror=()=>reject(Error('Razorpay checkout could not load.'));document.body.appendChild(script);});}
-      new window.Razorpay({key:payment.keyId,amount:payment.amountPaise,currency:'INR',order_id:payment.gatewayOrderId,name:'J.M. Tyre Services',description:`Owner-approved request ${request.requestId}`,handler:async proof=>{await run('/api/payments/verify',proof);},modal:{ondismiss:()=>setNotice('Checkout closed. Payment is not recorded until server verification succeeds.')}}).open();
-    }catch(e){setError(e.message);}
+export default function RequestDetails({ id, admin = false }) {
+  const [request, setRequest] = useState(null);
+  const [attempt, setAttempt] = useState(null);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [busy, setBusy] = useState(false);
+  async function refresh() {
+    const r = await fetch(`/api/requests/${encodeURIComponent(id)}`, {
+      cache: "no-store",
+    });
+    const d = await r.json();
+    if (!r.ok) throw Error(d.error);
+    setRequest(d.request);
+    const pending = d.request.payments.find((p) => p.status === "pending");
+    if (!pending) setAttempt(null);
+    return d.request;
   }
-  if(!request) return <p className="mx-4 my-12 rounded-xl bg-[#eff4ee] p-8 text-[13px] sm:mx-8" role={error?'alert':undefined}>{error || 'Loading your request…'}</p>;
-  const pending=attempt || request.payments.find(p=>p.status==='pending');const due=request.paymentDuePaise;
-  return <div className="mx-4 mb-12 mt-6 sm:mx-8"><a className="inline-flex items-center gap-1 text-[12px] font-bold text-[#2d6740] underline" href={admin?'/admin':'/account'}><ArrowLeft aria-hidden="true" size={15}/>{admin?'Admin panel':'Your account'}</a><div className="mt-5 rounded-[22px] bg-[#eaf2e8] p-7 sm:p-10"><span className="rounded-full bg-[#d8e9d8] px-3 py-1 text-[10px] font-extrabold text-[#285d3c]">PURCHASE REQUEST</span><h1 className="mt-4 text-[37px] font-extrabold tracking-[-.075em]">{request.requestId}</h1><p className="mt-2 text-[13px] text-[#47634e]">{request.productSnapshot.name} · {formatDate(request.createdAt)}</p>{request.isDemo&&<p className="mt-5 rounded-lg border border-[#b9d2ba] bg-white p-3 text-[12px] font-bold text-[#355e3c]">DEMO request using fictional inventory. Demo payment moves no money.</p>}</div>
-    <div className="mt-6 grid gap-6 lg:grid-cols-[1.05fr_.95fr]"><section className="rounded-[19px] border border-[#e0e9df] p-6"><h2 className="text-[24px] font-extrabold tracking-[-.06em]">Request summary</h2><dl className="mt-5 divide-y divide-[#e5ece4] text-[13px]">{[['Product',request.productSnapshot.name],['Unit price',formatINR(request.productSnapshot.pricePaise)],['Quantity',request.quantity],['Estimated total',formatINR(request.totalPaise)],['Preference',request.fulfillment==='pickup'?'Shop pickup':'Ask about delivery'],['Request status',statusLabel(request.status)],['Payment status',statusLabel(request.paymentStatus)],['Payment option',request.paymentType ? request.paymentType==='full'?'Full payment':'Advance payment' : 'Awaiting owner decision'],['Amount paid online',formatINR(request.paidPaise)],['Balance not paid online',formatINR(request.totalPaise-request.paidPaise)],["Owner's rejection reason",request.rejectionReason || '—']].map(([key,value])=><div className="flex justify-between gap-6 py-3" key={key}><dt className="text-[#5d7461]">{key}</dt><dd className="max-w-[60%] text-right font-bold">{value}</dd></div>)}</dl></section>
-      <section className="h-fit rounded-[19px] bg-[#eef5ec] p-6"><h2 className="flex items-center gap-2 text-[23px] font-extrabold tracking-[-.06em]"><CreditCard size={22} aria-hidden="true"/>Payment</h2>
-        {request.status==='pending'?<p className="mt-4 text-[13px] leading-relaxed text-[#4d6854]">The owner must approve this request before Pay Now appears. No amount is charged by submitting a request.</p>:request.status==='rejected'||request.status==='cancelled'?<p className="mt-4 text-[13px]">No payment is available for this request.</p>:request.paidPaise>0?<div className="mt-5"><p className="flex items-center gap-2 text-[13px] font-bold text-[#2e6540]"><ShieldCheck size={17} aria-hidden="true"/>{request.isDemo?'Simulated demo verification recorded':'Verified payment recorded'}</p>{request.paymentStatus==='partially_paid'&&<p className="mt-3 text-[12px] text-[#566e5c]">The remaining {formatINR(request.totalPaise-request.paidPaise)} has not been paid online. The owner will confirm collection arrangements.</p>}</div>:request.status==='awaiting_payment'?<div><p className="mt-4 text-[13px] leading-relaxed text-[#4c6653]">The owner approved {request.paymentType==='advance'?'an advance':'full payment'} of <strong>{formatINR(due)}</strong>. Stock was reserved on approval.</p>{pending?.mode==='live' && pending.gatewayFailureCount>0&&<p className="mt-3 text-[12px] text-[#805438]">A gateway attempt failed, but this order remains open. You can retry checkout; no payment is recorded until the server verifies a captured charge.</p>}{!pending?<button className="mt-5 inline-flex min-h-[46px] items-center gap-2 rounded-full bg-[#173d29] px-5 text-[12px] font-extrabold text-white disabled:opacity-60" disabled={busy} onClick={begin} type="button">{request.isDemo?'Start Demo Payment':'Pay Now'} <ArrowUpRight size={16} aria-hidden="true"/></button>:pending.mode==='demo'?<div className="mt-5 rounded-xl border border-[#bad3bc] bg-white p-5"><p className="text-[12px] font-extrabold text-[#28553a]">SIMULATION ONLY · {formatINR(pending.amountPaise)}</p><p className="mt-2 text-[11px] leading-relaxed text-[#5c7461]">The two-step demo lets you test accept then verify. Neither button contacts Razorpay or moves money.</p><div className="mt-4 flex flex-wrap gap-2"><button className="rounded-full bg-[#173d29] px-4 py-2 text-[11px] font-bold text-white disabled:opacity-50" disabled={busy || pending.demoAccepted} onClick={async()=>{const d=await run('/api/payments/demo/accept',{paymentId:pending.id});if(d)setAttempt(prev=>({...pending,demoAccepted:true}));}} type="button">Demo Accept Payment</button><button className="rounded-full bg-[#31704b] px-4 py-2 text-[11px] font-bold text-white disabled:opacity-50" disabled={busy || !pending.demoAccepted} onClick={()=>run('/api/payments/demo/verify',{paymentId:pending.id})} type="button">Demo Verify Payment</button><button className="rounded-full border border-[#b6cdb9] px-4 py-2 text-[11px] font-bold disabled:opacity-50" disabled={busy} onClick={()=>run('/api/payments/demo/fail',{paymentId:pending.id})} type="button">Simulate failure</button></div></div>:<button className="mt-5 rounded-full bg-[#173d29] px-5 py-3 text-[12px] font-bold text-white" disabled={busy} onClick={()=>openRazorpay(pending)} type="button">Open Razorpay checkout</button>}</div>:<p className="mt-4 text-[13px]">Payment is complete or not available.</p>}
-        {notice&&<p aria-live="polite" className="mt-4 rounded-lg bg-white p-3 text-[12px] text-[#265b37]" role="status">{notice}</p>}{error&&<p className="mt-4 rounded-lg bg-red-50 p-3 text-[12px] text-red-800" role="alert">{error}</p>}
-        <h3 className="mt-7 text-[15px] font-extrabold">Transactions</h3>{request.payments.length?<ul className="mt-2 divide-y divide-[#dbe7da]">{request.payments.map(p=><li className="py-3 text-[11px]" key={p.id}><span className="font-bold">{p.mode==='demo'?'Demo (not real)':'Razorpay'} · {statusLabel(p.status)} · {formatINR(p.amountPaise)}</span><small className="mt-1 block text-[#5c725f]">{formatDate(p.createdAt)} · {p.gatewayPaymentId || p.gatewayOrderId || p.id}</small></li>)}</ul>:<p className="mt-2 text-[12px] text-[#607463]">No payment attempt yet.</p>}
-      </section></div>
-    <section className="mt-6 rounded-[19px] border border-[#e2eae1] p-6"><h2 className="text-[21px] font-extrabold">Request history</h2><ol className="mt-4 space-y-3">{request.history.map((entry,i)=><li className="border-l-2 border-[#a6c6a6] pl-4 text-[12px]" key={i}><strong>{statusLabel(entry.status)}</strong> · {formatDate(entry.at)}{entry.note ? <small className="mt-1 block text-[#5c7461]">{entry.note}</small> : null}</li>)}</ol></section>
-  </div>;
+  useEffect(() => {
+    refresh().catch((e) => setError(e.message));
+  }, [id]);
+  async function run(endpoint, payload) {
+    setError("");
+    setNotice("");
+    setBusy(true);
+    try {
+      const r = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const d = await r.json();
+      if (!r.ok) throw Error(d.error || "Action failed.");
+      setNotice(d.notice || "Updated.");
+      await refresh();
+      return d;
+    } catch (e) {
+      setError(e.message);
+      return null;
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function begin() {
+    const d = await run(`/api/requests/${encodeURIComponent(id)}/payment`, {});
+    if (d?.payment) {
+      setAttempt(d.payment);
+      setNotice(
+        d.payment.mode === "demo"
+          ? "DEMO ONLY — no real payment will be taken. Choose a simulation step below."
+          : "Opening secure Razorpay checkout…",
+      );
+      if (d.payment.mode === "live") openRazorpay(d.payment);
+    }
+  }
+  async function openRazorpay(payment) {
+    try {
+      if (!window.Razorpay) {
+        await new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = "https://checkout.razorpay.com/v1/checkout.js";
+          script.onload = resolve;
+          script.onerror = () =>
+            reject(Error("Razorpay checkout could not load."));
+          document.body.appendChild(script);
+        });
+      }
+      new window.Razorpay({
+        key: payment.keyId,
+        amount: payment.amountPaise,
+        currency: "INR",
+        order_id: payment.gatewayOrderId,
+        name: "J.M. Tyre Services",
+        description: `Owner-approved request ${request.requestId}`,
+        handler: async (proof) => {
+          await run("/api/payments/verify", proof);
+        },
+        modal: {
+          ondismiss: () =>
+            setNotice(
+              "Checkout closed. Payment is not recorded until server verification succeeds.",
+            ),
+        },
+      }).open();
+    } catch (e) {
+      setError(e.message);
+    }
+  }
+  if (!request)
+    return (
+      <p
+        className="mx-4 my-12 rounded-xl bg-[#eff4ee] p-8 text-[13px] sm:mx-8"
+        role={error ? "alert" : undefined}
+      >
+        {error || "Loading your request…"}
+      </p>
+    );
+  const pending =
+    attempt || request.payments.find((p) => p.status === "pending");
+  const due = request.paymentDuePaise;
+  return (
+    <div className="mx-4 mb-12 mt-6 sm:mx-8">
+      <a
+        className="inline-flex items-center gap-1 text-[12px] font-bold text-[#2d6740] underline"
+        href={admin ? "/admin" : "/account"}
+      >
+        <ArrowLeft aria-hidden="true" size={15} />
+        {admin ? "Admin panel" : "Your account"}
+      </a>
+      <div className="mt-5 rounded-[22px] bg-[#eaf2e8] p-7 sm:p-10">
+        <span className="rounded-full bg-[#d8e9d8] px-3 py-1 text-[10px] font-extrabold text-[#285d3c]">
+          PURCHASE REQUEST
+        </span>
+        <h1 className="mt-4 text-[37px] font-extrabold tracking-[-.075em]">
+          {request.requestId}
+        </h1>
+        <p className="mt-2 text-[13px] text-[#47634e]">
+          {request.productSnapshot.name} · {formatDate(request.createdAt)}
+        </p>
+        {request.isDemo && (
+          <p className="mt-5 rounded-lg border border-[#b9d2ba] bg-white p-3 text-[12px] font-bold text-[#355e3c]">
+            DEMO request using fictional inventory. Demo payment moves no money.
+          </p>
+        )}
+      </div>
+      <div className="mt-6 grid gap-6 lg:grid-cols-[1.05fr_.95fr]">
+        <section className="rounded-[19px] border border-[#e0e9df] p-6">
+          <h2 className="text-[24px] font-extrabold tracking-[-.06em]">
+            Request summary
+          </h2>
+          <dl className="mt-5 divide-y divide-[#e5ece4] text-[13px]">
+            {[
+              ["Product", request.productSnapshot.name],
+              ["Unit price", formatINR(request.productSnapshot.pricePaise)],
+              ["Quantity", request.quantity],
+              ["Estimated total", formatINR(request.totalPaise)],
+              [
+                "Preference",
+                request.fulfillment === "pickup"
+                  ? "Shop pickup"
+                  : "Ask about delivery",
+              ],
+              ["Request status", statusLabel(request.status)],
+              ["Payment status", statusLabel(request.paymentStatus)],
+              [
+                "Payment option",
+                request.paymentType
+                  ? request.paymentType === "full"
+                    ? "Full payment"
+                    : "Advance payment"
+                  : "Awaiting owner decision",
+              ],
+              ["Amount paid online", formatINR(request.paidPaise)],
+              [
+                "Balance not paid online",
+                formatINR(request.totalPaise - request.paidPaise),
+              ],
+              ["Owner's rejection reason", request.rejectionReason || "—"],
+            ].map(([key, value]) => (
+              <div className="flex justify-between gap-6 py-3" key={key}>
+                <dt className="text-[#5d7461]">{key}</dt>
+                <dd className="max-w-[60%] text-right font-bold">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+        <section className="h-fit rounded-[19px] bg-[#eef5ec] p-6">
+          <h2 className="flex items-center gap-2 text-[23px] font-extrabold tracking-[-.06em]">
+            <CreditCard size={22} aria-hidden="true" />
+            Payment
+          </h2>
+          {request.status === "pending" ? (
+            <p className="mt-4 text-[13px] leading-relaxed text-[#4d6854]">
+              The owner must approve this request before Pay Now appears. No
+              amount is charged by submitting a request.
+            </p>
+          ) : request.status === "rejected" ||
+            request.status === "cancelled" ? (
+            <p className="mt-4 text-[13px]">
+              No payment is available for this request.
+            </p>
+          ) : request.paidPaise > 0 ? (
+            <div className="mt-5">
+              <p className="flex items-center gap-2 text-[13px] font-bold text-[#2e6540]">
+                <ShieldCheck size={17} aria-hidden="true" />
+                {request.isDemo
+                  ? "Simulated demo verification recorded"
+                  : "Verified payment recorded"}
+              </p>
+              {request.paymentStatus === "partially_paid" && (
+                <p className="mt-3 text-[12px] text-[#566e5c]">
+                  The remaining{" "}
+                  {formatINR(request.totalPaise - request.paidPaise)} has not
+                  been paid online. The owner will confirm collection
+                  arrangements.
+                </p>
+              )}
+            </div>
+          ) : request.status === "awaiting_payment" ? (
+            <div>
+              <p className="mt-4 text-[13px] leading-relaxed text-[#4c6653]">
+                The owner approved{" "}
+                {request.paymentType === "advance"
+                  ? "an advance"
+                  : "full payment"}{" "}
+                of <strong>{formatINR(due)}</strong>. Stock was reserved on
+                approval.
+              </p>
+              {pending?.mode === "live" && pending.gatewayFailureCount > 0 && (
+                <p className="mt-3 text-[12px] text-[#805438]">
+                  A gateway attempt failed, but this order remains open. You can
+                  retry checkout; no payment is recorded until the server
+                  verifies a captured charge.
+                </p>
+              )}
+              {!pending ? (
+                <button
+                  className="mt-5 inline-flex min-h-[46px] items-center gap-2 rounded-full bg-[#173d29] px-5 text-[12px] font-extrabold text-white disabled:opacity-60"
+                  disabled={busy}
+                  onClick={begin}
+                  type="button"
+                >
+                  {request.isDemo ? "Start Demo Payment" : "Pay Now"}{" "}
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </button>
+              ) : pending.mode === "demo" ? (
+                <div className="mt-5 rounded-xl border border-[#bad3bc] bg-white p-5">
+                  <p className="text-[12px] font-extrabold text-[#28553a]">
+                    SIMULATION ONLY · {formatINR(pending.amountPaise)}
+                  </p>
+                  <p className="mt-2 text-[11px] leading-relaxed text-[#5c7461]">
+                    The two-step demo lets you test accept then verify. Neither
+                    button contacts Razorpay or moves money.
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <button
+                      className="rounded-full bg-[#173d29] px-4 py-2 text-[11px] font-bold text-white disabled:opacity-50"
+                      disabled={busy || pending.demoAccepted}
+                      onClick={async () => {
+                        const d = await run("/api/payments/demo/accept", {
+                          paymentId: pending.id,
+                        });
+                        if (d)
+                          setAttempt((prev) => ({
+                            ...pending,
+                            demoAccepted: true,
+                          }));
+                      }}
+                      type="button"
+                    >
+                      Demo Accept Payment
+                    </button>
+                    <button
+                      className="rounded-full bg-[#31704b] px-4 py-2 text-[11px] font-bold text-white disabled:opacity-50"
+                      disabled={busy || !pending.demoAccepted}
+                      onClick={() =>
+                        run("/api/payments/demo/verify", {
+                          paymentId: pending.id,
+                        })
+                      }
+                      type="button"
+                    >
+                      Demo Verify Payment
+                    </button>
+                    <button
+                      className="rounded-full border border-[#b6cdb9] px-4 py-2 text-[11px] font-bold disabled:opacity-50"
+                      disabled={busy}
+                      onClick={() =>
+                        run("/api/payments/demo/fail", {
+                          paymentId: pending.id,
+                        })
+                      }
+                      type="button"
+                    >
+                      Simulate failure
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  className="mt-5 rounded-full bg-[#173d29] px-5 py-3 text-[12px] font-bold text-white"
+                  disabled={busy}
+                  onClick={() => openRazorpay(pending)}
+                  type="button"
+                >
+                  Open Razorpay checkout
+                </button>
+              )}
+            </div>
+          ) : (
+            <p className="mt-4 text-[13px]">
+              Payment is complete or not available.
+            </p>
+          )}
+          {notice && (
+            <p
+              aria-live="polite"
+              className="mt-4 rounded-lg bg-white p-3 text-[12px] text-[#265b37]"
+              role="status"
+            >
+              {notice}
+            </p>
+          )}
+          {error && (
+            <p
+              className="mt-4 rounded-lg bg-red-50 p-3 text-[12px] text-red-800"
+              role="alert"
+            >
+              {error}
+            </p>
+          )}
+          <h3 className="mt-7 text-[15px] font-extrabold">Transactions</h3>
+          {request.payments.length ? (
+            <ul className="mt-2 divide-y divide-[#dbe7da]">
+              {request.payments.map((p) => (
+                <li className="py-3 text-[11px]" key={p.id}>
+                  <span className="font-bold">
+                    {p.mode === "demo" ? "Demo (not real)" : "Razorpay"} ·{" "}
+                    {statusLabel(p.status)} · {formatINR(p.amountPaise)}
+                  </span>
+                  <small className="mt-1 block text-[#5c725f]">
+                    {formatDate(p.createdAt)} ·{" "}
+                    {p.gatewayPaymentId || p.gatewayOrderId || p.id}
+                  </small>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-2 text-[12px] text-[#607463]">
+              No payment attempt yet.
+            </p>
+          )}
+        </section>
+      </div>
+      <section className="mt-6 rounded-[19px] border border-[#e2eae1] p-6">
+        <h2 className="text-[21px] font-extrabold">Request history</h2>
+        <ol className="mt-4 space-y-3">
+          {request.history.map((entry, i) => (
+            <li
+              className="border-l-2 border-[#a6c6a6] pl-4 text-[12px]"
+              key={i}
+            >
+              <strong>{statusLabel(entry.status)}</strong> ·{" "}
+              {formatDate(entry.at)}
+              {entry.note ? (
+                <small className="mt-1 block text-[#5c7461]">
+                  {entry.note}
+                </small>
+              ) : null}
+            </li>
+          ))}
+        </ol>
+      </section>
+    </div>
+  );
 }
